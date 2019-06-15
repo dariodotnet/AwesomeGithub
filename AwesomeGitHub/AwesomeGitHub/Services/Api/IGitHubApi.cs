@@ -7,7 +7,7 @@
     public interface IGitHubApi
     {
         [Headers("User-Agent: Awesome App")]
-        [Get("/search/repositories?q=language:{language}&sort=stars&per_page=20&page={page}")]
+        [Get("/search/repositories?q=language:{language}&sort=stars&page={page}")]
         IObservable<GitHubResult> Search(string language, int page);
 
         [Headers("User-Agent: Awesome Octocat App")]
