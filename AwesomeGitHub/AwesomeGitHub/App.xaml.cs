@@ -1,6 +1,5 @@
-﻿using System;
+﻿using AwesomeGitHub.Views;
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
 
 namespace AwesomeGitHub
 {
@@ -10,7 +9,17 @@ namespace AwesomeGitHub
         {
             InitializeComponent();
 
-            MainPage = new MainPage();
+            var detail = new NavigationPage(new HomeView())
+            {
+                BarBackgroundColor = (Color)App.Current.Resources["ApplicationColor"]
+            };
+
+            MainPage = new MasterDetailPage
+            {
+                Master = new MasterView(),
+                Detail = detail,
+                IsGestureEnabled = true
+            };
         }
 
         protected override void OnStart()

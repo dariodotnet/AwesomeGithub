@@ -1,11 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<Application xmlns="http://xamarin.com/schemas/2014/forms"
+<Application x:Class="AwesomeGitHub.App"
+             xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d"
-             x:Class="AwesomeGitHub.App">
+             mc:Ignorable="d">
     <Application.Resources>
-
+        <Color x:Key="ApplicationColor">#89c064</Color>
+        <Color x:Key="ApplicationStatus">#343438</Color>
+        <Color x:Key="HeaderBox">#f0f0f0</Color>
+        <Color x:Key="HeaderLabelColor">#4473c7</Color>
+        <Color x:Key="SubLabelColor">#d6d6d6</Color>
+        <Color x:Key="HighLightColor">#df9305</Color>
+        <Color x:Key="SeparatorColor">#e1e1e1</Color>
     </Application.Resources>
 </Application>
