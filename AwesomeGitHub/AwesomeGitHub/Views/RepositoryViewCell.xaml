@@ -42,7 +42,7 @@
                 <cachedImage:CachedImage x:Name="UserImage"
                                          Aspect="AspectFit"
                                          CacheDuration="24"
-                                         CacheType="Disk"
+                                         CacheType="All"
                                          DownsampleToViewSize="True"
                                          ErrorPlaceholder="UserLoader"
                                          HeightRequest="50"
