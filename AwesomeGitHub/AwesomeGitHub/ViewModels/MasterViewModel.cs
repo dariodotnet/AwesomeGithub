@@ -20,9 +20,4 @@ namespace AwesomeGitHub.ViewModels
                 });
         }
     }
-
-    public class ViewModelBase : ReactiveObject
-    {
-
-    }
 }
