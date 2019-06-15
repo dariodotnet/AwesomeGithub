@@ -124,8 +124,20 @@
     <Reference Include="System.Numerics.Vectors" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="akavache">
+      <Version>6.5.9</Version>
+    </PackageReference>
     <PackageReference Include="ReactiveUI.XamForms">
-      <Version>9.17.1</Version>
+      <Version>9.17.4</Version>
+    </PackageReference>
+    <PackageReference Include="Refit">
+      <Version>4.7.9</Version>
+    </PackageReference>
+    <PackageReference Include="Xamarin.FFImageLoading.Forms">
+      <Version>2.4.11.982</Version>
+    </PackageReference>
+    <PackageReference Include="Xamarin.FFImageLoading.Transformations">
+      <Version>2.4.11.982</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.Forms" Version="4.0.0.497661" />
     <PackageReference Include="Xamarin.Essentials" Version="1.1.0" />
@@ -136,5 +148,20 @@
       <Project>{BA05FBBD-4B88-4EF8-8D0A-B29D4000E4F9}</Project>
       <Name>AwesomeGitHub</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\UserLoader.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\UserLoader%402x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\UserLoader%403x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\todo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\todo%402x.png" />
   </ItemGroup>
 </Project>
