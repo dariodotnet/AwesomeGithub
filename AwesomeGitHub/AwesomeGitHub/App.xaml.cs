@@ -3,11 +3,16 @@ using Xamarin.Forms;
 
 namespace AwesomeGitHub
 {
+    using Services;
+    using Splat;
+
     public partial class App : Application
     {
         public App()
         {
             InitializeComponent();
+
+            RegisterServices();
 
             var detail = new NavigationPage(new HomeView())
             {
@@ -18,8 +23,15 @@ namespace AwesomeGitHub
             {
                 Master = new MasterView(),
                 Detail = detail,
-                IsGestureEnabled = true
+                IsGestureEnabled = true,
+                IconImageSource = ImageSource.FromResource("todo")
             };
+        }
+
+        private void RegisterServices()
+        {
+            Locator.CurrentMutable.RegisterLazySingleton(() => new CacheService(), typeof(ICacheService));
+            Locator.CurrentMutable.RegisterLazySingleton(() => new ApiService(), typeof(IApiService));
         }
 
         protected override void OnStart()
