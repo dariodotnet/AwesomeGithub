@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<xamForms:ReactiveViewCell x:Class="AwesomeGitHub.Views.RepositoryViewCell"
+                           xmlns="http://xamarin.com/schemas/2014/forms"
+                           xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                           xmlns:cachedImage="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+                           xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+                           xmlns:iconize="clr-namespace:Plugin.Iconize;assembly=Plugin.Iconize"
+                           xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                           xmlns:model="clr-namespace:AwesomeGitHub.Services;assembly=AwesomeGitHub"
+                           xmlns:transformations="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading.Transformations"
+                           xmlns:xamForms="clr-namespace:ReactiveUI.XamForms;assembly=ReactiveUI.XamForms"
+                           x:TypeArguments="model:GitHubRepository"
+                           mc:Ignorable="d">
+    <StackLayout>
+        <Grid Margin="0,8,0,0" ColumnSpacing="16">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="6*" />
+                <ColumnDefinition Width="4*" />
+            </Grid.ColumnDefinitions>
+
+            <StackLayout>
+                <Label FontSize="Medium"
+                       Text="{Binding RepositoryName}"
+                       TextColor="{StaticResource HeaderLabelColor}" />
+                <Label FontSize="Micro"
+                       LineBreakMode="TailTruncation"
+                       MaxLines="2"
+                       Text="{Binding Description}"
+                       TextColor="{StaticResource SubLabelColor}" />
+
+                <StackLayout Orientation="Horizontal">
+                    <iconize:IconImage HeightRequest="18"
+                                       Icon="fa-code-fork"
+                                       IconColor="{StaticResource HighLightColor}" />
+                    <Label Text="{Binding ForksCount}" />
+
+                    <iconize:IconImage HeightRequest="18"
+                                       Icon="fa-star"
+                                       IconColor="{StaticResource HighLightColor}" />
+                    <Label Text="{Binding StarsCount}" />
+                </StackLayout>
+
+
+            </StackLayout>
+            <StackLayout Grid.Column="1"
+                         Margin="0,0,16,0"
+                         HorizontalOptions="CenterAndExpand"
+                         Spacing="0">
+                <cachedImage:CachedImage x:Name="UserImage"
+                                         Aspect="AspectFit"
+                                         CacheDuration="24"
+                                         CacheType="Disk"
+                                         DownsampleToViewSize="True"
+                                         ErrorPlaceholder="UserLoader"
+                                         HeightRequest="50"
+                                         LoadingPlaceholder="UserLoader"
+                                         RetryCount="3"
+                                         RetryDelay="600"
+                                         Source="{Binding Owner.Avatar}"
+                                         WidthRequest="50">
+                    <cachedImage:CachedImage.Transformations>
+                        <transformations:RoundedTransformation Radius="50" />
+                    </cachedImage:CachedImage.Transformations>
+                </cachedImage:CachedImage>
+
+                <Label FontSize="Small"
+                       Text="{Binding Owner.Login}"
+                       TextColor="{StaticResource HeaderLabelColor}" />
+                <Label FontSize="Micro" Text="{Binding FullName}" />
+            </StackLayout>
+        </Grid>
+        <BoxView Margin="0,8,0,0"
+                 BackgroundColor="{StaticResource SeparatorColor}"
+                 HeightRequest="1" />
+    </StackLayout>
+</xamForms:ReactiveViewCell>
