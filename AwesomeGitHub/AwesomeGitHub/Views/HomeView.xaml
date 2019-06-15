@@ -1,11 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage x:Class="AwesomeGitHub.Views.HomeView"
-             xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             Title="Github Awesome"
-             mc:Ignorable="d">
+<rxui:ReactiveContentPage x:Class="AwesomeGitHub.Views.HomeView"
+                          xmlns="http://xamarin.com/schemas/2014/forms"
+                          xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                          xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+                          xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                          xmlns:rxui="clr-namespace:ReactiveUI.XamForms;assembly=ReactiveUI.XamForms"
+                          xmlns:views="clr-namespace:AwesomeGitHub.Views;assembly=AwesomeGitHub"
+                          xmlns:vm="clr-namespace:AwesomeGitHub.ViewModels;assembly=AwesomeGitHub"
+                          Title=" "
+                          x:TypeArguments="vm:HomeViewModel"
+                          mc:Ignorable="d">
+    <ContentPage.Resources>
+        <DataTemplate x:Key="RepositoryTemplate">
+            <views:RepositoryViewCell />
+        </DataTemplate>
+    </ContentPage.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="50" />
@@ -18,5 +27,12 @@
                    FontSize="Medium"
                    Placeholder="Search" />
         </Grid>
+        <ListView x:Name="Repositories"
+                  Grid.Row="1"
+                  Margin="16,0"
+                  CachingStrategy="RecycleElement"
+                  HasUnevenRows="True"
+                  ItemTemplate="{StaticResource RepositoryTemplate}"
+                  SeparatorVisibility="None" />
     </Grid>
-</ContentPage>
+</rxui:ReactiveContentPage>

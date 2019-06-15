@@ -1,20 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
-
-namespace AwesomeGitHub.Views
+﻿namespace AwesomeGitHub.Views
 {
+    using ReactiveUI;
+    using System.Reactive;
+    using System.Reactive.Disposables;
+    using System.Reactive.Linq;
+    using ViewModels;
+    using Xamarin.Forms.Xaml;
+
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class HomeView : ContentPage
+    public partial class HomeView
     {
         public HomeView()
         {
             InitializeComponent();
+
+            this.WhenActivated(d =>
+            {
+                this.WhenAnyValue(v => v.ViewModel.LoadRepositoriesCommand)
+                    .Where(x => x != null)
+                    .Select(x => Unit.Default)
+                    .InvokeCommand(ViewModel.LoadRepositoriesCommand);
+
+                this.OneWayBind(ViewModel, vm => vm.Repositories, v => v.Repositories.ItemsSource).DisposeWith(d);
+            });
+
+            ViewModel = new HomeViewModel();
         }
     }
 }
