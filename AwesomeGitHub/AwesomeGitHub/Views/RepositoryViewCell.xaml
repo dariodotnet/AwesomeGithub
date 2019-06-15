@@ -4,7 +4,6 @@
                            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
                            xmlns:cachedImage="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
                            xmlns:d="http://xamarin.com/schemas/2014/forms/design"
-                           xmlns:iconize="clr-namespace:Plugin.Iconize;assembly=Plugin.Iconize"
                            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                            xmlns:model="clr-namespace:AwesomeGitHub.Services;assembly=AwesomeGitHub"
                            xmlns:transformations="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading.Transformations"
@@ -29,14 +28,8 @@
                        TextColor="{StaticResource SubLabelColor}" />
 
                 <StackLayout Orientation="Horizontal">
-                    <iconize:IconImage HeightRequest="18"
-                                       Icon="fa-code-fork"
-                                       IconColor="{StaticResource HighLightColor}" />
                     <Label Text="{Binding ForksCount}" />
 
-                    <iconize:IconImage HeightRequest="18"
-                                       Icon="fa-star"
-                                       IconColor="{StaticResource HighLightColor}" />
                     <Label Text="{Binding StarsCount}" />
                 </StackLayout>
 
