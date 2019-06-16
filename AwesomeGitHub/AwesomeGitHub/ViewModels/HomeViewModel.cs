@@ -53,6 +53,7 @@
             Observable.FromEventPattern(
                     x => _cacheService.LanguageChanged += x,
                     x => _cacheService.LanguageChanged -= x)
+                .ObserveOn(RxApp.MainThreadScheduler)
                 .Do(x => _repositoriesData.Clear())
                 .Select(x => Unit.Default)
                 .InvokeCommand(AddRepositoriesCommand);
