@@ -18,14 +18,10 @@
         {
             _cacheService = Locator.Current.GetService<ICacheService>();
 
-            ChangeCommand = ReactiveCommand.Create(ChangeLanguage,
-                this.WhenAny(x => x.CanLoad, i => i.Value));
+            ChangeCommand = ReactiveCommand.Create(ChangeLanguage);
 
         }
 
-        private void ChangeLanguage()
-        {
-            _cacheService.ChangeLanguage(Language);
-        }
+        private void ChangeLanguage() => _cacheService.ChangeLanguage(Language);
     }
 }

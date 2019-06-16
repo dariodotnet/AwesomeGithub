@@ -60,6 +60,12 @@
                     .Where(x => x)
                     .Select(x => Unit.Default)
                     .InvokeCommand(ViewModel.AddRepositoriesCommand).DisposeWith(d);
+
+                ViewModel.ExceptionInteraction.RegisterHandler(async interaction =>
+                {
+                    await DisplayAlert("Error", interaction.Input.Message, "Ok");
+                    interaction.SetOutput(Unit.Default);
+                });
             });
             base.OnAppearing();
         }

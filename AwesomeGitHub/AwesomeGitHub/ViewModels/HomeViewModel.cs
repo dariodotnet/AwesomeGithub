@@ -89,10 +89,7 @@
             AddRepositoriesCommand = ReactiveCommand.CreateFromObservable(_cacheService.LoadNext, canLoad);
 
             AddRepositoriesCommand.IsExecuting.ToPropertyEx(this, x => x.Adding);
-            AddRepositoriesCommand.ThrownExceptions.Subscribe(x =>
-            {
-                //TODO handle exceptions
-            });
+            AddRepositoriesCommand.ThrownExceptions.SelectMany(ex => ExceptionInteraction.Handle(ex)).Subscribe();
 
             AddRepositoriesCommand.Subscribe(_repositoriesData.AddRange);
         }

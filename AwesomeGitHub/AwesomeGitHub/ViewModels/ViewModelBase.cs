@@ -1,24 +1,16 @@
 ﻿namespace AwesomeGitHub.ViewModels
 {
     using ReactiveUI;
-    using ReactiveUI.Fody.Helpers;
-    using Services;
-    using Splat;
-    using System.Reactive.Linq;
+    using System;
+    using System.Reactive;
 
     public class ViewModelBase : ReactiveObject
     {
-        protected IInternetService InternetService;
-
-        public bool CanLoad { [ObservableAsProperty]get; }
+        public Interaction<Exception, Unit> ExceptionInteraction { get; }
 
         protected ViewModelBase()
         {
-            InternetService = Locator.Current.GetService<IInternetService>();
-
-            Observable.Return(InternetService.GetInternetConnection).ToPropertyEx(this, x => x.CanLoad);
-
-            InternetService.InternetConnection.ToPropertyEx(this, x => x.CanLoad);
+            ExceptionInteraction = new Interaction<Exception, Unit>(RxApp.MainThreadScheduler);
         }
     }
 }
