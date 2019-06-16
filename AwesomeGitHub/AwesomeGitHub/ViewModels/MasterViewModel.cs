@@ -1,8 +1,7 @@
-﻿using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
-
-namespace AwesomeGitHub.ViewModels
+﻿namespace AwesomeGitHub.ViewModels
 {
+    using ReactiveUI;
+    using ReactiveUI.Fody.Helpers;
     using Services;
     using Splat;
     using System.Reactive;
@@ -19,7 +18,8 @@ namespace AwesomeGitHub.ViewModels
         {
             _cacheService = Locator.Current.GetService<ICacheService>();
 
-            ChangeCommand = ReactiveCommand.Create(ChangeLanguage);
+            ChangeCommand = ReactiveCommand.Create(ChangeLanguage,
+                this.WhenAny(x => x.CanLoad, i => i.Value));
 
         }
 

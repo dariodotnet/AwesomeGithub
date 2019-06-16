@@ -32,6 +32,7 @@ namespace AwesomeGitHub
         {
             Locator.CurrentMutable.RegisterLazySingleton(() => new CacheService(), typeof(ICacheService));
             Locator.CurrentMutable.RegisterLazySingleton(() => new ApiService(), typeof(IApiService));
+            Locator.CurrentMutable.RegisterLazySingleton(() => new InternetService(), typeof(IInternetService));
         }
 
         protected override void OnStart()
