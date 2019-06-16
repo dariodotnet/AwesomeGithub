@@ -76,6 +76,18 @@
                     return x;
                 });
 
+        public IObservable<Unit> Initialize() =>
+            _blob.GetAllKeys()
+                .Select(keys =>
+                {
+                    if (keys is null || !keys.Any())
+                    {
+                        return _blob.InsertObject(nameof(GitHubRepository), new List<GitHubRepository>());
+                    }
+
+                    return Observable.Return(Unit.Default);
+                }).Wait();
+
         public void ChangeLanguage(string language)
         {
             if (language.Equals(_language))
