@@ -1,6 +1,7 @@
 ﻿namespace AwesomeGitHub.Services
 {
     using Akavache;
+    using Models;
     using Splat;
     using System;
     using System.Collections.Generic;

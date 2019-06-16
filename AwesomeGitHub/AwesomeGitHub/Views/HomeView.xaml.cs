@@ -1,7 +1,7 @@
 ﻿namespace AwesomeGitHub.Views
 {
+    using Models;
     using ReactiveUI;
-    using Services;
     using System;
     using System.Linq;
     using System.Reactive;

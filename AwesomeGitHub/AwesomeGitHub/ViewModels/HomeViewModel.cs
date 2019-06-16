@@ -2,6 +2,7 @@
 {
     using DynamicData;
     using DynamicData.Binding;
+    using Models;
     using ReactiveUI;
     using ReactiveUI.Fody.Helpers;
     using Services;

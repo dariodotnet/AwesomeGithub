@@ -1,4 +1,4 @@
-﻿namespace AwesomeGitHub.Services
+﻿namespace AwesomeGitHub.Models
 {
     using Newtonsoft.Json;
 

@@ -1,7 +1,7 @@
-﻿namespace AwesomeGitHub.Services
+﻿namespace AwesomeGitHub.Models
 {
-    using System;
     using Newtonsoft.Json;
+    using System;
 
     public class GitHubPullRequest
     {

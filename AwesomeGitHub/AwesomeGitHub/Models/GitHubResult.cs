@@ -1,7 +1,7 @@
-﻿namespace AwesomeGitHub.Services
+﻿namespace AwesomeGitHub.Models
 {
-    using System.Collections.Generic;
     using Newtonsoft.Json;
+    using System.Collections.Generic;
 
     public class GitHubResult
     {

@@ -1,5 +1,6 @@
 ﻿namespace AwesomeGitHub.Services
 {
+    using Models;
     using Refit;
     using System;
     using System.Collections.Generic;
