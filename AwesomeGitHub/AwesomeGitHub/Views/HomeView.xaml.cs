@@ -17,12 +17,12 @@
         public HomeView()
         {
             InitializeComponent();
+
+            ViewModel = new HomeViewModel();
         }
 
         protected override void OnAppearing()
         {
-            base.OnAppearing();
-
             this.WhenActivated(d =>
             {
                 this.WhenAnyValue(v => v.ViewModel.LoadRepositoriesCommand)
@@ -50,9 +50,20 @@
                     .Where(x => x)
                     .Select(x => Unit.Default)
                     .InvokeCommand(ViewModel.AddRepositoriesCommand).DisposeWith(d);
-            });
 
-            ViewModel = new HomeViewModel();
+                Observable.FromEventPattern<EventHandler<SelectedItemChangedEventArgs>, SelectedItemChangedEventArgs>(
+                        h => Repositories.ItemSelected += h,
+                        h => Repositories.ItemSelected -= h)
+                    .Where(x => x != null && x.EventArgs.SelectedItem != null)
+                    .Subscribe(selection =>
+                    {
+                        var repository = (GitHubRepository)selection.EventArgs.SelectedItem;
+                        Navigation.PushAsync(new PullRequestView(repository));
+
+                        (selection.Sender as ListView).SelectedItem = null;
+                    });
+            });
+            base.OnAppearing();
         }
 
         private bool NeedLoad(int index)
