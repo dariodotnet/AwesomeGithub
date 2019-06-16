@@ -21,18 +21,18 @@
                 <Label x:Name="RepositoryName"
                        FontSize="Medium"
                        TextColor="{StaticResource HeaderLabelColor}" />
-                <Label FontSize="Micro"
+                <Label x:Name="Description"
+                       FontSize="Micro"
                        LineBreakMode="TailTruncation"
-                       MaxLines="2"
-                       Text="{Binding Description}" />
+                       MaxLines="2" />
 
                 <StackLayout Orientation="Horizontal">
                     <cachedImage:CachedImage CacheType="Memory"
                                              HeightRequest="18"
                                              Source="Fork"
                                              WidthRequest="18" />
-                    <Label FontSize="Small"
-                           Text="{Binding ForksCount}"
+                    <Label x:Name="ForksCount"
+                           FontSize="Small"
                            TextColor="{StaticResource HighLightColor}" />
 
                     <cachedImage:CachedImage Margin="8,0,0,0"
@@ -40,8 +40,8 @@
                                              HeightRequest="18"
                                              Source="Star"
                                              WidthRequest="18" />
-                    <Label FontSize="Small"
-                           Text="{Binding StarsCount}"
+                    <Label x:Name="StarsCount"
+                           FontSize="Small"
                            TextColor="{StaticResource HighLightColor}" />
                 </StackLayout>
 
@@ -68,15 +68,15 @@
                     </cachedImage:CachedImage.Transformations>
                 </cachedImage:CachedImage>
 
-                <Label FontSize="Small"
+                <Label x:Name="OwnerLogin"
+                       FontSize="Small"
                        HorizontalTextAlignment="Center"
                        LineBreakMode="TailTruncation"
-                       Text="{Binding Owner.Login}"
                        TextColor="{StaticResource HeaderLabelColor}" />
-                <Label FontSize="Micro"
+                <Label x:Name="FullName"
+                       FontSize="Micro"
                        HorizontalTextAlignment="Center"
-                       LineBreakMode="TailTruncation"
-                       Text="{Binding FullName}" />
+                       LineBreakMode="TailTruncation" />
             </StackLayout>
         </Grid>
         <BoxView Margin="0,8,0,0"
