@@ -17,6 +17,7 @@
         private readonly IApiService _apiService;
         private int _currentPage = 1;
         private string _language = KeyValues.DefaultLanguage;
+        private GitHubRepository _currentRepository;
 
         public CacheService()
         {
@@ -66,8 +67,16 @@
                 });
         }
 
-        public IObservable<IEnumerable<GitHubPullRequest>> GetPullRequests(long id) =>
-            Observable.Return(new List<GitHubPullRequest>());
+        public IObservable<GitHubRepository> SetCurrentRepository(GitHubRepository repository)
+        {
+            _currentRepository = repository;
+            return Observable.Return(_currentRepository);
+        }
+
+        public IObservable<GitHubRepository> GetCurrentRepository() => Observable.Return(_currentRepository);
+
+        public IObservable<IEnumerable<GitHubPullRequest>> GetPullRequests() =>
+            _apiService.GetPullRequests(_currentRepository.Owner.Login, _currentRepository.RepositoryName, _currentPage);
 
         public IObservable<Unit> ClearCache() =>
             _blob.InvalidateAll().Select(x =>
