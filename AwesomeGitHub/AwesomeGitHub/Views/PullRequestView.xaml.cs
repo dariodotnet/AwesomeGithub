@@ -36,6 +36,12 @@
 
                 this.OneWayBind(ViewModel, vm => vm.Repository.RepositoryName, v => v.Title,
                     e => $"{e[0].ToString().ToUpper()}{e.Substring(1)}").DisposeWith(d);
+
+                ViewModel.ExceptionInteraction.RegisterHandler(async interaction =>
+                {
+                    await DisplayAlert("Error", interaction.Input.Message, "Ok");
+                    interaction.SetOutput(Unit.Default);
+                });
             });
 
             base.OnAppearing();
