@@ -22,19 +22,20 @@
                 .ObserveOn(RxApp.MainThreadScheduler)
                 .Subscribe(x =>
                 {
-                    var detail = new NavigationPage(new HomeView())
-                    {
-                        BarBackgroundColor = (Color)App.Current.Resources["ApplicationColor"]
-                    };
 
-                    MainPage = new MasterDetailPage
-                    {
-                        Master = new MasterView(),
-                        Detail = detail,
-                        IsGestureEnabled = true,
-                        IconImageSource = ImageSource.FromResource("todo")
-                    };
                 });
+            var detail = new NavigationPage(new HomeView())
+            {
+                BarBackgroundColor = (Color)App.Current.Resources["ApplicationColor"]
+            };
+
+            MainPage = new MasterDetailPage
+            {
+                Master = new MasterView(),
+                Detail = detail,
+                IsGestureEnabled = true,
+                IconImageSource = ImageSource.FromResource("todo")
+            };
         }
 
         private void RegisterServices()
