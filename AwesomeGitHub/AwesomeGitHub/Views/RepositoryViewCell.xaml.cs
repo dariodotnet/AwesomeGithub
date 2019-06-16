@@ -2,23 +2,21 @@
 
 namespace AwesomeGitHub.Views
 {
+    using ReactiveUI;
+    using System.Reactive.Disposables;
+
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class RepositoryViewCell
     {
         public RepositoryViewCell()
         {
             InitializeComponent();
-        }
 
-        protected override void OnBindingContextChanged()
-        {
-            //UserImage.Source = null;
-
-            //if (ViewModel is null)
-            //    return;
-
-            //UserImage.Source = ViewModel.Owner.Avatar;
-            base.OnBindingContextChanged();
+            this.WhenActivated(d =>
+                {
+                    this.OneWayBind(ViewModel, vm => vm.RepositoryName, v => v.RepositoryName.Text,
+                        e => $"{e[0].ToString().ToUpper()}{e.Substring(1)}").DisposeWith(d);
+                });
         }
     }
 }

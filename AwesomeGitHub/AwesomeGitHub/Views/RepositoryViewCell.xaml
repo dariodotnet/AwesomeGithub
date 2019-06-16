@@ -4,6 +4,7 @@
                            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
                            xmlns:cachedImage="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
                            xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+                           xmlns:iconize="clr-namespace:Plugin.Iconize;assembly=Plugin.Iconize"
                            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                            xmlns:model="clr-namespace:AwesomeGitHub.Services;assembly=AwesomeGitHub"
                            xmlns:transformations="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading.Transformations"
@@ -13,24 +14,36 @@
     <StackLayout>
         <Grid Margin="0,8,0,0" ColumnSpacing="16">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="6*" />
-                <ColumnDefinition Width="4*" />
+                <ColumnDefinition Width="7*" />
+                <ColumnDefinition Width="3*" />
             </Grid.ColumnDefinitions>
 
             <StackLayout>
-                <Label FontSize="Medium"
-                       Text="{Binding RepositoryName}"
+                <Label x:Name="RepositoryName"
+                       FontSize="Medium"
                        TextColor="{StaticResource HeaderLabelColor}" />
                 <Label FontSize="Micro"
                        LineBreakMode="TailTruncation"
                        MaxLines="2"
-                       Text="{Binding Description}"
-                       TextColor="{StaticResource SubLabelColor}" />
+                       Text="{Binding Description}" />
 
                 <StackLayout Orientation="Horizontal">
-                    <Label Text="{Binding ForksCount}" />
+                    <cachedImage:CachedImage CacheType="Memory"
+                                             HeightRequest="18"
+                                             Source="Fork"
+                                             WidthRequest="18" />
+                    <Label FontSize="Small"
+                           Text="{Binding ForksCount}"
+                           TextColor="{StaticResource HighLightColor}" />
 
-                    <Label Text="{Binding StarsCount}" />
+                    <cachedImage:CachedImage Margin="8,0,0,0"
+                                             CacheType="Memory"
+                                             HeightRequest="18"
+                                             Source="Star"
+                                             WidthRequest="18" />
+                    <Label FontSize="Small"
+                           Text="{Binding StarsCount}"
+                           TextColor="{StaticResource HighLightColor}" />
                 </StackLayout>
 
 
@@ -38,28 +51,33 @@
             <StackLayout Grid.Column="1"
                          Margin="0,0,16,0"
                          HorizontalOptions="CenterAndExpand"
-                         Spacing="0">
+                         Spacing="0"
+                         VerticalOptions="End">
                 <cachedImage:CachedImage x:Name="UserImage"
-                                         Aspect="AspectFit"
-                                         CacheDuration="24"
+                                         CacheDuration="30"
                                          CacheType="All"
                                          DownsampleToViewSize="True"
                                          ErrorPlaceholder="UserLoader"
-                                         HeightRequest="50"
+                                         HeightRequest="32"
                                          LoadingPlaceholder="UserLoader"
                                          RetryCount="3"
                                          RetryDelay="600"
                                          Source="{Binding Owner.Avatar}"
-                                         WidthRequest="50">
+                                         WidthRequest="32">
                     <cachedImage:CachedImage.Transformations>
-                        <transformations:RoundedTransformation Radius="50" />
+                        <transformations:CircleTransformation />
                     </cachedImage:CachedImage.Transformations>
                 </cachedImage:CachedImage>
 
                 <Label FontSize="Small"
+                       HorizontalTextAlignment="Center"
+                       LineBreakMode="TailTruncation"
                        Text="{Binding Owner.Login}"
                        TextColor="{StaticResource HeaderLabelColor}" />
-                <Label FontSize="Micro" Text="{Binding FullName}" />
+                <Label FontSize="Micro"
+                       HorizontalTextAlignment="Center"
+                       LineBreakMode="TailTruncation"
+                       Text="{Binding FullName}" />
             </StackLayout>
         </Grid>
         <BoxView Margin="0,8,0,0"
