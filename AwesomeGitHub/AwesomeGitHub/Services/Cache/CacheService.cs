@@ -16,7 +16,7 @@
         private readonly IBlobCache _blob;
         private readonly IApiService _apiService;
         private int _currentPage = 1;
-        private string _language = KeyValues.DefaultLanguage;
+        private string _language;
         private GitHubRepository _currentRepository;
 
         public CacheService()
@@ -91,7 +91,8 @@
                 {
                     if (keys is null || !keys.Any())
                     {
-                        return _blob.InsertObject(nameof(GitHubRepository), new List<GitHubRepository>());
+                        return _blob.InsertObject(KeyValues.DefaultLanguage, "JavaScript")
+                            .Merge(_blob.InsertObject(nameof(GitHubRepository), new List<GitHubRepository>()));
                     }
 
                     return Observable.Return(Unit.Default);
@@ -102,12 +103,13 @@
             if (language.Equals(_language))
                 return;
 
-            ClearCache().Subscribe(x =>
-            {
-                _language = language;
-                _currentPage = 1;
-                OnLanguageChanged();
-            });
+            _blob.InsertObject(KeyValues.DefaultLanguage, language)
+                .Subscribe(x =>
+                {
+                    _language = language;
+                    _currentPage = 1;
+                    OnLanguageChanged();
+                });
         }
 
         protected virtual void OnLanguageChanged() => LanguageChanged?.Invoke(this, EventArgs.Empty);

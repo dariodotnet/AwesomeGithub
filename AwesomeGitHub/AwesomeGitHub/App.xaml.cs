@@ -4,6 +4,8 @@
     using Services;
     using Splat;
     using System;
+    using System.Reactive.Linq;
+    using ReactiveUI;
     using Xamarin.Forms;
 
     public partial class App : Application
@@ -14,20 +16,26 @@
 
             RegisterServices();
 
-            Locator.Current.GetService<ICacheService>().Initialize().Subscribe();
+            var cache = Locator.Current.GetService<ICacheService>();
 
-            var detail = new NavigationPage(new HomeView())
-            {
-                BarBackgroundColor = (Color)App.Current.Resources["ApplicationColor"]
-            };
+            cache.Initialize()
+                .ObserveOn(RxApp.MainThreadScheduler)
+                .Subscribe(x =>
+                {
+                    cache.ChangeLanguage("JavaScript");
+                    var detail = new NavigationPage(new HomeView())
+                    {
+                        BarBackgroundColor = (Color)App.Current.Resources["ApplicationColor"]
+                    };
 
-            MainPage = new MasterDetailPage
-            {
-                Master = new MasterView(),
-                Detail = detail,
-                IsGestureEnabled = true,
-                IconImageSource = ImageSource.FromResource("todo")
-            };
+                    MainPage = new MasterDetailPage
+                    {
+                        Master = new MasterView(),
+                        Detail = detail,
+                        IsGestureEnabled = true,
+                        IconImageSource = ImageSource.FromResource("todo")
+                    };
+                });
         }
 
         private void RegisterServices()
