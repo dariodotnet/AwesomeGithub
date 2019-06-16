@@ -84,8 +84,9 @@
 
         private void ConfigureAddCommand()
         {
-            AddRepositoriesCommand = ReactiveCommand.CreateFromObservable(_cacheService.LoadNext,
-                this.WhenAny(x => x.Adding, x => x.CanLoad, (a, i) => !a.Value && i.Value));
+            var canLoad = this.WhenAny(x => x.Adding, (a) => !a.Value);
+
+            AddRepositoriesCommand = ReactiveCommand.CreateFromObservable(_cacheService.LoadNext, canLoad);
 
             AddRepositoriesCommand.IsExecuting.ToPropertyEx(this, x => x.Adding);
             AddRepositoriesCommand.ThrownExceptions.Subscribe(x =>
