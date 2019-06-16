@@ -1,11 +1,11 @@
 ﻿namespace AwesomeGitHub
 {
     using AwesomeGitHub.Views;
+    using ReactiveUI;
     using Services;
     using Splat;
     using System;
     using System.Reactive.Linq;
-    using ReactiveUI;
     using Xamarin.Forms;
 
     public partial class App : Application
@@ -22,7 +22,6 @@
                 .ObserveOn(RxApp.MainThreadScheduler)
                 .Subscribe(x =>
                 {
-                    cache.ChangeLanguage("JavaScript");
                     var detail = new NavigationPage(new HomeView())
                     {
                         BarBackgroundColor = (Color)App.Current.Resources["ApplicationColor"]
