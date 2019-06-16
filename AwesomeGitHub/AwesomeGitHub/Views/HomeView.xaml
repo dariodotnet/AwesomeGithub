@@ -31,7 +31,6 @@
         <ListView x:Name="Repositories"
                   Grid.Row="1"
                   Margin="16,0,0,0"
-                  CachingStrategy="RecycleElement"
                   HasUnevenRows="True"
                   ItemTemplate="{StaticResource RepositoryTemplate}"
                   SeparatorVisibility="None" />
