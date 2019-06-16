@@ -112,7 +112,7 @@
         }
 
         public IObservable<Unit> ClearCache() =>
-            _blob.InvalidateAll().Select(x =>
+            _blob.Invalidate(nameof(GitHubRepository)).Select(x =>
                 {
                     _blob.InsertObject(nameof(GitHubRepository), new List<GitHubRepository>());
                     return x;
@@ -140,7 +140,6 @@
                 .Subscribe(x =>
                 {
                     _language = language;
-                    _currentPage = 1;
                     OnLanguageChanged();
                 });
         }
