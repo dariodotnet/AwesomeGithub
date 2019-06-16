@@ -5,14 +5,55 @@
                           xmlns:d="http://xamarin.com/schemas/2014/forms/design"
                           xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                           xmlns:rxui="clr-namespace:ReactiveUI.XamForms;assembly=ReactiveUI.XamForms"
+                          xmlns:views="clr-namespace:AwesomeGitHub.Views;assembly=AwesomeGitHub"
                           xmlns:vm="clr-namespace:AwesomeGitHub.ViewModels;assembly=AwesomeGitHub"
                           x:TypeArguments="vm:PullRequestViewModel"
                           mc:Ignorable="d">
-    <ContentPage.Content>
-        <StackLayout>
-            <Label HorizontalOptions="CenterAndExpand"
-                   Text="Welcome to Xamarin.Forms!"
-                   VerticalOptions="CenterAndExpand" />
+    <ContentPage.Resources>
+        <DataTemplate x:Key="PullRequestTemplate">
+            <views:PullRequestViewCell />
+        </DataTemplate>
+    </ContentPage.Resources>
+    <Grid RowSpacing="0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <StackLayout BackgroundColor="{StaticResource HeaderBox}" Orientation="Horizontal">
+            <Label Margin="16,0,0,0"
+                   FontAttributes="Bold"
+                   FontSize="Small"
+                   TextColor="{StaticResource HighLightColor}"
+                   VerticalOptions="Center">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span x:Name="Open" Text="0" />
+                        <Span Text=" / " TextColor="{StaticResource ApplicationStatus}" />
+                        <Span x:Name="Closed"
+                              Text="0"
+                              TextColor="{StaticResource ApplicationStatus}" />
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
         </StackLayout>
-    </ContentPage.Content>
+
+        <ListView x:Name="PullRequests"
+                  Grid.Row="1"
+                  Margin="16,0,0,0"
+                  CachingStrategy="RecycleElement"
+                  HasUnevenRows="True"
+                  ItemTemplate="{StaticResource PullRequestTemplate}"
+                  SeparatorVisibility="None" />
+
+        <Grid x:Name="GridLoader"
+              Grid.Row="0"
+              Grid.RowSpan="2">
+            <Grid BackgroundColor="{StaticResource SeparatorColor}" Opacity="0.3" />
+            <ActivityIndicator HeightRequest="48"
+                               HorizontalOptions="Center"
+                               IsRunning="True"
+                               VerticalOptions="Center"
+                               Color="{StaticResource ApplicationColor}" />
+        </Grid>
+    </Grid>
 </rxui:ReactiveContentPage>
