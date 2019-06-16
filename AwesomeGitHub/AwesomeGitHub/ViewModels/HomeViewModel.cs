@@ -72,6 +72,9 @@
 
             LoadRepositoriesCommand.Subscribe(x =>
             {
+                if (_repositoriesData.Items.Any())
+                    return;
+
                 if (x.Any())
                     _repositoriesData.AddRange(x);
                 else
