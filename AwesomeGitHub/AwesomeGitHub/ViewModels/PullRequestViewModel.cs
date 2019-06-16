@@ -31,9 +31,9 @@
         public bool Loading { [ObservableAsProperty]get; }
         public bool Adding { [ObservableAsProperty]get; }
 
-        public ReactiveCommand<Unit, GitHubRepository> LoadCommand { get; }
-        public ReactiveCommand<Unit, IEnumerable<GitHubPullRequest>> AddCommand { get; }
-        private ReactiveCommand<Unit, IEnumerable<GitHubPullRequest>> LoadCacheCommand { get; }
+        public ReactiveCommand<Unit, GitHubRepository> LoadCommand { get; private set; }
+        public ReactiveCommand<Unit, IEnumerable<GitHubPullRequest>> AddCommand { get; private set; }
+        private ReactiveCommand<Unit, IEnumerable<GitHubPullRequest>> LoadCacheCommand { get; set; }
 
         public PullRequestViewModel()
         {
@@ -50,9 +50,24 @@
                 .Bind(out _pullRequests)
                 .DisposeMany().Subscribe();
 
+            ConfigureLoadCommand();
+            ConfigureLoadCacheCommand();
+            ConfigureAddCommand();
+
+            this.WhenAnyValue(x => x.Repository)
+                .Where(x => x != null)
+                .Select(x => Unit.Default)
+                .InvokeCommand(LoadCacheCommand);
+        }
+
+        private void ConfigureLoadCommand()
+        {
             LoadCommand = ReactiveCommand.CreateFromObservable(_cacheService.GetCurrentRepository);
             LoadCommand.ToPropertyEx(this, x => x.Repository);
+        }
 
+        private void ConfigureLoadCacheCommand()
+        {
             LoadCacheCommand = ReactiveCommand.CreateFromObservable(_cacheService.GetPullRequests);
             LoadCacheCommand.IsExecuting.ToPropertyEx(this, x => x.Loading);
             LoadCacheCommand.ThrownExceptions.Subscribe(ex =>
@@ -67,7 +82,10 @@
                     Observable.Return(Unit.Default).InvokeCommand(AddCommand);
 
             });
+        }
 
+        private void ConfigureAddCommand()
+        {
             var canAdd = this.WhenAny(x => x.Adding, x => x.Complete, (a, c) => !a.Value && !c.Value);
 
             AddCommand = ReactiveCommand.CreateFromObservable(_cacheService.LoadNextPullRequests, canAdd);
@@ -78,14 +96,12 @@
                 //Check if there are more pull request
                 if (x.Any())
                     _pullRequestData.AddRange(x);
-                else
-                    Complete = true;
-            });
 
-            this.WhenAnyValue(x => x.Repository)
-                .Where(x => x != null)
-                .Select(x => Unit.Default)
-                .InvokeCommand(LoadCacheCommand);
+                //Check if response has result per page configured on IGitHubApi
+                if (!x.Any() || x.Count() < 50)
+                    Complete = true;
+
+            });
         }
 
         private void Count()
