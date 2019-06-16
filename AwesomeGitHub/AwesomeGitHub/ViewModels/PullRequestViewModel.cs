@@ -1,6 +1,7 @@
 ﻿namespace AwesomeGitHub.ViewModels
 {
     using DynamicData;
+    using DynamicData.Binding;
     using Models;
     using ReactiveUI;
     using ReactiveUI.Fody.Helpers;
@@ -24,12 +25,14 @@
 
         [Reactive] public string OpenCount { get; set; }
         [Reactive] public string CloseCount { get; set; }
+        [Reactive] public bool Complete { get; set; }
 
         public GitHubRepository Repository { [ObservableAsProperty]get; }
         public bool Loading { [ObservableAsProperty]get; }
         public bool Adding { [ObservableAsProperty]get; }
 
         public ReactiveCommand<Unit, GitHubRepository> LoadCommand { get; }
+        public ReactiveCommand<Unit, IEnumerable<GitHubPullRequest>> AddCommand { get; }
         private ReactiveCommand<Unit, IEnumerable<GitHubPullRequest>> LoadCacheCommand { get; }
 
         public PullRequestViewModel()
@@ -42,6 +45,7 @@
             CloseCount = "0 closed";
 
             _pullRequestData.Connect()
+                .Sort(SortExpressionComparer<GitHubPullRequest>.Descending(x => x.PullRequestDate))
                 .Do(x => Count())
                 .Bind(out _pullRequests)
                 .DisposeMany().Subscribe();
@@ -51,8 +55,32 @@
 
             LoadCacheCommand = ReactiveCommand.CreateFromObservable(_cacheService.GetPullRequests);
             LoadCacheCommand.IsExecuting.ToPropertyEx(this, x => x.Loading);
-            LoadCacheCommand.ThrownExceptions.SelectMany(ex => ExceptionInteraction.Handle(ex)).Subscribe();
-            LoadCacheCommand.Subscribe(_pullRequestData.AddRange);
+            LoadCacheCommand.ThrownExceptions.Subscribe(ex =>
+            {
+                //TODO Handle cache exceptions
+            });
+            LoadCacheCommand.Subscribe(x =>
+            {
+                if (x.Any())
+                    _pullRequestData.AddRange(x);
+                else
+                    Observable.Return(Unit.Default).InvokeCommand(AddCommand);
+
+            });
+
+            var canAdd = this.WhenAny(x => x.Adding, x => x.Complete, (a, c) => !a.Value && !c.Value);
+
+            AddCommand = ReactiveCommand.CreateFromObservable(_cacheService.LoadNextPullRequests, canAdd);
+            AddCommand.IsExecuting.ToPropertyEx(this, x => x.Adding);
+            AddCommand.ThrownExceptions.SelectMany(ex => ExceptionInteraction.Handle(ex)).Subscribe();
+            AddCommand.Subscribe(x =>
+            {
+                //Check if there are more pull request
+                if (x.Any())
+                    _pullRequestData.AddRange(x);
+                else
+                    Complete = true;
+            });
 
             this.WhenAnyValue(x => x.Repository)
                 .Where(x => x != null)

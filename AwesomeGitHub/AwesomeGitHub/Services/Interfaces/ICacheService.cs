@@ -16,6 +16,7 @@
         IObservable<GitHubRepository> SetCurrentRepository(GitHubRepository repository);
         IObservable<GitHubRepository> GetCurrentRepository();
         IObservable<IEnumerable<GitHubPullRequest>> GetPullRequests();
+        IObservable<IEnumerable<GitHubPullRequest>> LoadNextPullRequests();
 
         void ChangeLanguage(string language);
     }

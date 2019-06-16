@@ -75,8 +75,42 @@
 
         public IObservable<GitHubRepository> GetCurrentRepository() => Observable.Return(_currentRepository);
 
-        public IObservable<IEnumerable<GitHubPullRequest>> GetPullRequests() =>
-            _apiService.GetPullRequests(_currentRepository.Owner.Login, _currentRepository.RepositoryName, _currentPage);
+        public IObservable<IEnumerable<GitHubPullRequest>> GetPullRequests()
+        {
+            var key = $"{nameof(GitHubPullRequest)}.{_currentRepository.Id}";
+
+            return _blob.GetAllKeys()
+                .Select(keys =>
+                {
+                    if (keys.Contains(key))
+                        return _blob.GetObject<IEnumerable<GitHubPullRequest>>(key).Wait();
+
+                    _blob.InsertObject(key, new List<GitHubPullRequest>());
+                    return Observable.Return(new List<GitHubPullRequest>()).Wait();
+                });
+        }
+
+        public IObservable<IEnumerable<GitHubPullRequest>> LoadNextPullRequests()
+        {
+            var key = $"{nameof(GitHubPullRequest)}.{_currentRepository.Id}";
+            return _blob.GetObject<IEnumerable<GitHubPullRequest>>(key)
+                .Select(x =>
+                {
+                    var page = x.Any() ? x.Count() / 50 : 0;
+                    page++;
+                    return _apiService.GetPullRequests(_currentRepository.Owner.Login, _currentRepository.RepositoryName, page)
+                        .Select(response =>
+                        {
+                            if (response.Any())
+                            {
+                                var copy = new List<GitHubPullRequest>(x);
+                                copy.AddRange(response);
+                                _blob.InsertObject(key, copy, DateTimeOffset.UtcNow.AddHours(12));
+                            }
+                            return response;
+                        }).Wait();
+                });
+        }
 
         public IObservable<Unit> ClearCache() =>
             _blob.InvalidateAll().Select(x =>

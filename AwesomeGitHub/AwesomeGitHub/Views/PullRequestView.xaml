@@ -54,5 +54,26 @@
                                VerticalOptions="Center"
                                Color="{StaticResource ApplicationColor}" />
         </Grid>
+        <Grid x:Name="GridAdder"
+              Grid.Row="1"
+              HeightRequest="48"
+              TranslationY="60"
+              VerticalOptions="End">
+            <BoxView Margin="16,4"
+                     BackgroundColor="{StaticResource ApplicationStatus}"
+                     CornerRadius="24"
+                     HeightRequest="48" />
+            <StackLayout HorizontalOptions="Center" Orientation="Horizontal">
+                <Label FontSize="Medium"
+                       Text="Loading from GitHub"
+                       TextColor="{StaticResource ApplicationColor}"
+                       VerticalTextAlignment="Center" />
+                <ActivityIndicator HeightRequest="32"
+                                   IsRunning="True"
+                                   VerticalOptions="Center"
+                                   Color="{StaticResource ApplicationColor}" />
+            </StackLayout>
+
+        </Grid>
     </Grid>
 </rxui:ReactiveContentPage>
