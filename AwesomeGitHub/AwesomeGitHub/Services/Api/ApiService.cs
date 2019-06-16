@@ -16,5 +16,9 @@
 
         public IObservable<IEnumerable<GitHubRepository>> GetRepositories(string language, int page) =>
             _api.Search(language, page).Select(x => x.Items);
+
+        public IObservable<IEnumerable<GitHubPullRequest>> GetPullRequests(string userName, string repositoryName, int page) =>
+            _api.RequestPullRequest(userName, repositoryName, page);
+
     }
 }
