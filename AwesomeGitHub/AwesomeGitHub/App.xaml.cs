@@ -1,10 +1,10 @@
-﻿using AwesomeGitHub.Views;
-using Xamarin.Forms;
-
-namespace AwesomeGitHub
+﻿namespace AwesomeGitHub
 {
+    using AwesomeGitHub.Views;
     using Services;
     using Splat;
+    using System;
+    using Xamarin.Forms;
 
     public partial class App : Application
     {
@@ -13,6 +13,8 @@ namespace AwesomeGitHub
             InitializeComponent();
 
             RegisterServices();
+
+            Locator.Current.GetService<ICacheService>().Initialize().Subscribe();
 
             var detail = new NavigationPage(new HomeView())
             {
