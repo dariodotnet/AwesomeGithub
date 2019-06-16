@@ -12,7 +12,7 @@
         IObservable<GitHubResult> Search(string language, int page);
 
         [Headers("User-Agent: Awesome Octocat App")]
-        [Get("/repos/{name}/{repo}/pulls?page={page}&state=all")]
+        [Get("/repos/{name}/{repo}/pulls?per_page=50&page={page}&state=all")]
         IObservable<IEnumerable<GitHubPullRequest>> RequestPullRequest(string name, string repo, int page);
     }
 }
