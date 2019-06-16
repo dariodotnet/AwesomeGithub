@@ -164,4 +164,22 @@
   <ItemGroup>
     <BundleResource Include="Resources\todo%402x.png" />
   </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\Fork.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\Fork%402x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\Fork%403x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\Star.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\Star%402x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\Star%403x.png" />
+  </ItemGroup>
 </Project>
