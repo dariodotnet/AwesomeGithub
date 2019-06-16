@@ -15,7 +15,6 @@
 
         private readonly IBlobCache _blob;
         private readonly IApiService _apiService;
-        private int _currentPage = 1;
         private string _language;
         private GitHubRepository _currentRepository;
 
@@ -40,14 +39,14 @@
         public IObservable<IEnumerable<GitHubRepository>> GetRepositories() =>
            _blob.GetObject<IEnumerable<GitHubRepository>>(nameof(GitHubRepository));
 
-        public IObservable<IEnumerable<GitHubRepository>> LoadNext()
+        public IObservable<IEnumerable<GitHubRepository>> LoadNextRepositories()
         {
             return _blob.GetObject<IEnumerable<GitHubRepository>>(nameof(GitHubRepository))
                 .Select(x =>
                 {
-                    _currentPage = x.Any() ? x.Count() / 50 : 0;
-                    _currentPage++;
-                    return _apiService.GetRepositories(_language, _currentPage)
+                    var page = x.Any() ? x.Count() / 50 : 0;
+                    page++;
+                    return _apiService.GetRepositories(_language, page)
                         .Select(response =>
                         {
                             var copy = new List<GitHubRepository>(x);

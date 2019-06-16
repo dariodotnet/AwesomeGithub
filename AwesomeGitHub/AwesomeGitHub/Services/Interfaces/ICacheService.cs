@@ -12,7 +12,7 @@
         IObservable<Unit> Initialize();
         IObservable<Unit> ClearCache();
         IObservable<IEnumerable<GitHubRepository>> GetRepositories();
-        IObservable<IEnumerable<GitHubRepository>> LoadNext();
+        IObservable<IEnumerable<GitHubRepository>> LoadNextRepositories();
         IObservable<GitHubRepository> SetCurrentRepository(GitHubRepository repository);
         IObservable<GitHubRepository> GetCurrentRepository();
         IObservable<IEnumerable<GitHubPullRequest>> GetPullRequests();
