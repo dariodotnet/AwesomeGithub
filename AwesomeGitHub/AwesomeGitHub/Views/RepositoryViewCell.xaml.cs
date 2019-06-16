@@ -1,9 +1,8 @@
-﻿using Xamarin.Forms.Xaml;
-
-namespace AwesomeGitHub.Views
+﻿namespace AwesomeGitHub.Views
 {
     using ReactiveUI;
     using System.Reactive.Disposables;
+    using Xamarin.Forms.Xaml;
 
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class RepositoryViewCell
