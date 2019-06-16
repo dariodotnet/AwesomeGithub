@@ -58,6 +58,9 @@
                 .InvokeCommand(AddRepositoriesCommand);
         }
 
+        public IObservable<GitHubRepository> SetCurrent(GitHubRepository repository) =>
+            _cacheService.SetCurrentRepository(repository);
+
         private void ConfigureLoadCommand()
         {
             LoadRepositoriesCommand = ReactiveCommand.CreateFromObservable(_cacheService.GetRepositories);
