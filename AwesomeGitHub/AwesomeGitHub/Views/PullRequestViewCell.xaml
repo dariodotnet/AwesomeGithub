@@ -46,5 +46,13 @@
                      HorizontalOptions="FillAndExpand"
                      VerticalOptions="End" />
         </StackLayout>
+        <Label x:Name="Closed"
+               Margin="0,0,8,8"
+               FontAttributes="Bold"
+               FontSize="Micro"
+               HorizontalOptions="End"
+               Text="Closed"
+               TextColor="IndianRed"
+               VerticalOptions="End" />
     </Grid>
 </rxui:ReactiveViewCell>

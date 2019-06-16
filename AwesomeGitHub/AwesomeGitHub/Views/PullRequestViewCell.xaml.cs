@@ -18,6 +18,8 @@
 
             this.WhenActivated(d =>
             {
+                this.OneWayBind(ViewModel, vm => vm.State, v => v.Closed.IsVisible, e => e.Equals("closed"))
+                    .DisposeWith(d);
                 this.OneWayBind(ViewModel, vm => vm.Title, v => v.Title.Text,
                     e => $"{e[0].ToString().ToUpper()}{e.Substring(1)}").DisposeWith(d);
                 this.OneWayBind(ViewModel, vm => vm.Description, v => v.Description.Text).DisposeWith(d);
