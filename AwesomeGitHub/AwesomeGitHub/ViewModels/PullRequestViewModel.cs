@@ -51,6 +51,7 @@
 
             LoadCacheCommand = ReactiveCommand.CreateFromObservable(_cacheService.GetPullRequests);
             LoadCacheCommand.IsExecuting.ToPropertyEx(this, x => x.Loading);
+            LoadCacheCommand.ThrownExceptions.SelectMany(ex => ExceptionInteraction.Handle(ex)).Subscribe();
             LoadCacheCommand.Subscribe(_pullRequestData.AddRange);
 
             this.WhenAnyValue(x => x.Repository)
