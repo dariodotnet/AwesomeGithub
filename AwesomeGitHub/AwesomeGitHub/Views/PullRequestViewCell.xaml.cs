@@ -39,5 +39,19 @@
 
             GestureRecognizers.Add(_tap);
         }
+
+        protected override void OnBindingContextChanged()
+        {
+            base.OnBindingContextChanged();
+            if (ViewModel is null)
+                return;
+
+            Closed.IsVisible = ViewModel.IsClosed;
+            Title.Text = $"{ViewModel.Title[0].ToString().ToUpper()}{ViewModel.Title.Substring(1)}";
+            Description.Text = ViewModel.Description;
+            UserLogin.Text = ViewModel.UserLogin;
+            PullRequestDate.Text = ViewModel.Date.ToShortDateString();
+            UserImage.Source = ImageSource.FromUri(new Uri(ViewModel.Image));
+        }
     }
 }

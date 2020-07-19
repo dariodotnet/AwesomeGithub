@@ -29,7 +29,6 @@
                                          LoadingPlaceholder="UserLoader"
                                          RetryCount="3"
                                          RetryDelay="600"
-                                         Source="{Binding User.Avatar}"
                                          WidthRequest="32">
                     <cachedImage:CachedImage.Transformations>
                         <transformations:CircleTransformation />
