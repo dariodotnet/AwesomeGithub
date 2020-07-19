@@ -52,14 +52,14 @@
     <Reference Include="System.Numerics.Vectors" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="akavache">
-      <Version>6.10.20</Version>
-    </PackageReference>
     <PackageReference Include="ReactiveUI.XamForms">
       <Version>11.4.17</Version>
     </PackageReference>
     <PackageReference Include="Refit">
       <Version>5.1.67</Version>
+    </PackageReference>
+    <PackageReference Include="sqlite-net-pcl">
+      <Version>1.7.335</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.AndroidX.AppCompat">
       <Version>1.1.0.1</Version>

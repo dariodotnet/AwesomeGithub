@@ -14,12 +14,11 @@
 
         public ReactiveCommand<Unit, Unit> ChangeCommand { get; }
 
-        public MasterViewModel()
+        public MasterViewModel(ICacheService cacheService = null)
         {
-            _cacheService = Locator.Current.GetService<ICacheService>();
+            _cacheService = cacheService ?? Locator.Current.GetService<ICacheService>();
 
             ChangeCommand = ReactiveCommand.Create(ChangeLanguage);
-
         }
 
         private void ChangeLanguage() => _cacheService.ChangeLanguage(Language);

@@ -1,6 +1,5 @@
 ﻿namespace AwesomeGitHub.Views
 {
-    using Models;
     using ReactiveUI;
     using System;
     using System.Linq;
@@ -25,13 +24,14 @@
         {
             this.WhenActivated(d =>
             {
-                this.WhenAnyValue(v => v.ViewModel.LoadRepositoriesCommand)
+                this.WhenAnyValue(v => v.ViewModel.LoadCache)
                     .Where(x => x != null)
                     .Select(x => Unit.Default)
-                    .InvokeCommand(ViewModel.LoadRepositoriesCommand);
+                    .InvokeCommand(ViewModel.LoadCache);
 
                 this.Bind(ViewModel, vm => vm.Search, v => v.SearchBox.Text).DisposeWith(d);
                 this.OneWayBind(ViewModel, vm => vm.Repositories, v => v.Repositories.ItemsSource).DisposeWith(d);
+                this.Bind(ViewModel, vm => vm.Selected, v => v.Repositories.SelectedItem);
                 this.OneWayBind(ViewModel, vm => vm.Loading, v => v.GridLoader.IsVisible).DisposeWith(d);
 
                 this.WhenAnyValue(v => v.ViewModel.Adding)
@@ -41,25 +41,31 @@
                         GridAdder.TranslateTo(0, visible ? 0 : 60, 500);
                     });
 
-                this.WhenAnyValue(v => v.Repositories.SelectedItem)
+                this.WhenAnyValue(v => v.ViewModel.Selected)
+                    .Where(x => x != null)
                     .ObserveOn(RxApp.MainThreadScheduler)
-                    .Where(x => x != null)
-                    .Subscribe(selected =>
-                    {
-                        ViewModel.SetCurrent((GitHubRepository)selected)
-                            .Subscribe(x => Navigation.PushAsync(new PullRequestView()));
-                    })
-                    .DisposeWith(d);
+                    .Do(async selected => await Navigation.PushAsync(new PullRequestView()))
+                    .Subscribe().DisposeWith(d);
 
-                Observable.FromEventPattern<EventHandler<ItemVisibilityEventArgs>, ItemVisibilityEventArgs>(
-                        x => Repositories.ItemAppearing += x,
-                        x => Repositories.ItemAppearing -= x)
-                    .Where(x => x != null)
-                    .Select(x => x.EventArgs.ItemIndex)
-                    .Select(NeedLoad)
-                    .Where(x => x)
-                    .Select(x => Unit.Default)
-                    .InvokeCommand(ViewModel.AddRepositoriesCommand).DisposeWith(d);
+                //this.WhenAnyValue(v => v.Repositories.SelectedItem)
+                //    .ObserveOn(RxApp.MainThreadScheduler)
+                //    .Where(x => x != null)
+                //    .Subscribe(selected =>
+                //    {
+                //        ViewModel.SetCurrent((GitHubRepository)selected)
+                //            .Subscribe(x => Navigation.PushAsync(new PullRequestView()));
+                //    })
+                //    .DisposeWith(d);
+
+                //Observable.FromEventPattern<EventHandler<ItemVisibilityEventArgs>, ItemVisibilityEventArgs>(
+                //        x => Repositories.ItemAppearing += x,
+                //        x => Repositories.ItemAppearing -= x)
+                //    .Where(x => x != null)
+                //    .Select(x => x.EventArgs.ItemIndex)
+                //    .Select(NeedLoad)
+                //    .Where(x => x)
+                //    .Select(x => Unit.Default)
+                //    .InvokeCommand(ViewModel.LoadNext).DisposeWith(d);
 
                 ViewModel.ExceptionInteraction.RegisterHandler(async interaction =>
                 {
@@ -76,13 +82,13 @@
             base.OnDisappearing();
         }
 
-        private bool NeedLoad(int index)
-        {
-            var items = Repositories.ItemsSource.Cast<GitHubRepository>().Count();
-            if (items < 10 || items >= KeyValues.MaxRepositories)
-                return false;
+        //private bool NeedLoad(int index)
+        //{
+        //    var items = Repositories.ItemsSource.Cast<LocalRepository>().Count();
+        //    if (items < 10 || items >= KeyValues.MaxRepositories)
+        //        return false;
 
-            return index >= items - 5;
-        }
+        //    return index >= items - 5;
+        //}
     }
 }

@@ -1,15 +1,15 @@
 ﻿<?xml version="1.0" encoding="UTF-8" ?>
-<rxui:ReactiveViewCell x:Class="AwesomeGitHub.Views.RepositoryViewCell"
-                       xmlns="http://xamarin.com/schemas/2014/forms"
-                       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-                       xmlns:cachedImage="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
-                       xmlns:d="http://xamarin.com/schemas/2014/forms/design"
-                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                       xmlns:models="clr-namespace:AwesomeGitHub.Models;assembly=AwesomeGitHub"
-                       xmlns:rxui="clr-namespace:ReactiveUI.XamForms;assembly=ReactiveUI.XamForms"
-                       xmlns:transformations="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading.Transformations"
-                       x:TypeArguments="models:GitHubRepository"
-                       mc:Ignorable="d">
+<rxui:ReactiveContentView x:Class="AwesomeGitHub.Views.RepositoryViewCell"
+                          xmlns="http://xamarin.com/schemas/2014/forms"
+                          xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                          xmlns:cachedImage="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+                          xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+                          xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                          xmlns:models="clr-namespace:AwesomeGitHub.Models;assembly=AwesomeGitHub"
+                          xmlns:rxui="clr-namespace:ReactiveUI.XamForms;assembly=ReactiveUI.XamForms"
+                          xmlns:transformations="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading.Transformations"
+                          x:TypeArguments="models:LocalRepository"
+                          mc:Ignorable="d">
     <StackLayout>
         <Grid Margin="0,8,0,0" ColumnSpacing="16">
             <Grid.ColumnDefinitions>
@@ -61,7 +61,7 @@
                                          LoadingPlaceholder="UserLoader"
                                          RetryCount="3"
                                          RetryDelay="600"
-                                         Source="{Binding Owner.Avatar}"
+                                         Source="{Binding Image}"
                                          WidthRequest="32">
                     <cachedImage:CachedImage.Transformations>
                         <transformations:CircleTransformation />
@@ -83,4 +83,4 @@
                  BackgroundColor="{StaticResource SeparatorColor}"
                  HeightRequest="1" />
     </StackLayout>
-</rxui:ReactiveViewCell>
+</rxui:ReactiveContentView>

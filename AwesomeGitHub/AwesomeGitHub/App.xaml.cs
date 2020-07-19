@@ -1,11 +1,9 @@
 ﻿namespace AwesomeGitHub
 {
     using AwesomeGitHub.Views;
-    using ReactiveUI;
     using Services;
     using Splat;
-    using System;
-    using System.Reactive.Linq;
+    using Xamarin.Essentials;
     using Xamarin.Forms;
 
     public partial class App : Application
@@ -16,14 +14,9 @@
 
             RegisterServices();
 
-            var cache = Locator.Current.GetService<ICacheService>();
+            if (string.IsNullOrEmpty(Preferences.Get(KeyValues.DefaultLanguage, "")))
+                Preferences.Set(KeyValues.DefaultLanguage, "javascript");
 
-            cache.Initialize()
-                .ObserveOn(RxApp.MainThreadScheduler)
-                .Subscribe(x =>
-                {
-
-                });
             var detail = new NavigationPage(new HomeView())
             {
                 BarBackgroundColor = (Color)App.Current.Resources["ApplicationColor"]

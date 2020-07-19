@@ -25,10 +25,10 @@
         {
             this.WhenActivated(d =>
             {
-                this.WhenAnyValue(v => v.ViewModel.LoadCommand)
+                this.WhenAnyValue(v => v.ViewModel.LoadCurrentRepository)
                     .Where(x => x != null)
                     .Select(x => Unit.Default)
-                    .InvokeCommand(ViewModel.LoadCommand);
+                    .InvokeCommand(ViewModel.LoadCurrentRepository);
 
                 this.OneWayBind(ViewModel, vm => vm.OpenCount, v => v.Open.Text).DisposeWith(d);
 
@@ -37,7 +37,7 @@
                 this.OneWayBind(ViewModel, vm => vm.PullRequests, v => v.PullRequests.ItemsSource).DisposeWith(d);
                 this.OneWayBind(ViewModel, vm => vm.Loading, v => v.GridLoader.IsVisible).DisposeWith(d);
 
-                this.OneWayBind(ViewModel, vm => vm.Repository.RepositoryName, v => v.Title,
+                this.OneWayBind(ViewModel, vm => vm.Repository.Name, v => v.Title,
                     e => $"{e[0].ToString().ToUpper()}{e.Substring(1)}").DisposeWith(d);
 
                 this.WhenAnyValue(v => v.ViewModel.Adding)

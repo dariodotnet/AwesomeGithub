@@ -1,9 +1,8 @@
 ﻿namespace AwesomeGitHub.Services
 {
     using Models;
-    using System;
     using System.Collections.Generic;
-    using System.Reactive.Linq;
+    using System.Threading.Tasks;
     using Xamarin.Essentials;
 
     public class ApiService : IApiService
@@ -24,15 +23,16 @@
             _hasInternet = e.NetworkAccess == NetworkAccess.Internet;
         }
 
-        public IObservable<IEnumerable<GitHubRepository>> GetRepositories(string language, int page)
+        public async Task<IEnumerable<GitHubRepository>> GetRepositories(string language, int page)
         {
             if (!_hasInternet)
                 throw new ConnectivityException();
 
-            return _api.Search(language, page).Select(x => x.Items);
+            var search = await _api.Search(language, page);
+            return search.Items;
         }
 
-        public IObservable<IEnumerable<GitHubPullRequest>> GetPullRequests(string userName, string repositoryName, int page)
+        public Task<IEnumerable<GitHubPullRequest>> GetPullRequests(string userName, string repositoryName, int page)
         {
             if (!_hasInternet)
                 throw new ConnectivityException();

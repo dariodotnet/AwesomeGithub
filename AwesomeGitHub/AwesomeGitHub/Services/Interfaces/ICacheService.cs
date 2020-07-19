@@ -1,23 +1,21 @@
 ﻿namespace AwesomeGitHub.Services
 {
     using Models;
-    using System;
     using System.Collections.Generic;
-    using System.Reactive;
+    using System.Threading.Tasks;
 
     public interface ICacheService
     {
-        event EventHandler LanguageChanged;
+        string Language { get; }
 
-        IObservable<Unit> Initialize();
-        IObservable<Unit> ClearCache();
-        IObservable<IEnumerable<GitHubRepository>> GetRepositories();
-        IObservable<IEnumerable<GitHubRepository>> LoadNextRepositories();
-        IObservable<GitHubRepository> SetCurrentRepository(GitHubRepository repository);
-        IObservable<GitHubRepository> GetCurrentRepository();
-        IObservable<IEnumerable<GitHubPullRequest>> GetPullRequests();
-        IObservable<IEnumerable<GitHubPullRequest>> LoadNextPullRequests();
-
+        void SetCurrentRepository(LocalRepository repository);
+        LocalRepository GetCurrentRepository();
         void ChangeLanguage(string language);
+        IEnumerable<LocalRepository> LoadCachedRepositories();
+        Task<IEnumerable<LocalRepository>> LoadNextRepositories();
+        IEnumerable<LocalPullRequest> LoadCachedPullRequests();
+        Task<IEnumerable<LocalPullRequest>> LoadNextPullRequests();
+        int GetRepositoriesCount();
+        int GetPullRequestCount();
     }
 }

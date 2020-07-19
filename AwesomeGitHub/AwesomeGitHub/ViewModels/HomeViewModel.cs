@@ -13,29 +13,31 @@
     using System.Linq;
     using System.Reactive;
     using System.Reactive.Linq;
+    using System.Threading.Tasks;
 
     public class HomeViewModel : ViewModelBase
     {
         private readonly ICacheService _cacheService;
 
-        private SourceList<GitHubRepository> _repositoriesData;
+        private SourceList<LocalRepository> _repositoriesData;
 
-        private ReadOnlyObservableCollection<GitHubRepository> _repositories;
-        public ReadOnlyObservableCollection<GitHubRepository> Repositories => _repositories;
+        private ReadOnlyObservableCollection<LocalRepository> _repositories;
+        public ReadOnlyObservableCollection<LocalRepository> Repositories => _repositories;
 
         public bool Loading { [ObservableAsProperty] get; }
         public bool Adding { [ObservableAsProperty] get; }
 
         [Reactive] public string Search { get; set; }
+        [Reactive] public LocalRepository Selected { get; set; }
 
-        public ReactiveCommand<Unit, IEnumerable<GitHubRepository>> LoadRepositoriesCommand { get; private set; }
-        public ReactiveCommand<Unit, IEnumerable<GitHubRepository>> AddRepositoriesCommand { get; private set; }
+        public ReactiveCommand<Unit, IEnumerable<LocalRepository>> LoadCache { get; private set; }
+        public ReactiveCommand<Unit, IEnumerable<LocalRepository>> LoadNext { get; private set; }
 
-        public HomeViewModel()
+        public HomeViewModel(ICacheService cacheService = null)
         {
-            _cacheService = Locator.Current.GetService<ICacheService>();
+            _cacheService = cacheService ?? Locator.Current.GetService<ICacheService>();
 
-            _repositoriesData = new SourceList<GitHubRepository>();
+            _repositoriesData = new SourceList<LocalRepository>();
 
             var filter = this.WhenAnyValue(x => x.Search)
                 .Throttle(TimeSpan.FromMilliseconds(500))
@@ -43,64 +45,71 @@
 
             _repositoriesData.Connect()
                 .Filter(filter)
-                .Sort(SortExpressionComparer<GitHubRepository>.Descending(x => x.StarsCount))
+                .Sort(SortExpressionComparer<LocalRepository>.Descending(x => x.StarsCount))
+                .ObserveOn(RxApp.MainThreadScheduler)
                 .Bind(out _repositories)
                 .DisposeMany().Subscribe();
 
-            ConfigureLoadCommand();
+            this.WhenAnyValue(x => x.Selected)
+                .Where(x => x != null)
+                .Do(x =>
+                {
+
+                })
+                .Do(x => _cacheService.SetCurrentRepository(x))
+                .Subscribe();
+
             ConfigureAddCommand();
-
-            Observable.FromEventPattern(
-                    x => _cacheService.LanguageChanged += x,
-                    x => _cacheService.LanguageChanged -= x)
-                .ObserveOn(RxApp.MainThreadScheduler)
-                .Do(x => _repositoriesData.Clear())
-                .Select(x => Unit.Default)
-                .InvokeCommand(AddRepositoriesCommand);
+            ConfigureLoadCommand();
         }
-
-        public IObservable<GitHubRepository> SetCurrent(GitHubRepository repository) =>
-            _cacheService.SetCurrentRepository(repository);
 
         private void ConfigureLoadCommand()
         {
-            LoadRepositoriesCommand = ReactiveCommand.CreateFromObservable(_cacheService.GetRepositories);
-            LoadRepositoriesCommand.IsExecuting.ToPropertyEx(this, x => x.Loading);
-            LoadRepositoriesCommand.ThrownExceptions.Subscribe(x =>
+            LoadCache = ReactiveCommand.Create(_cacheService.LoadCachedRepositories);
+            LoadCache.IsExecuting.ToPropertyEx(this, x => x.Loading);
+            LoadCache.ThrownExceptions.Subscribe(x =>
             {
                 //TODO handle exceptions
             });
 
-            LoadRepositoriesCommand.Subscribe(x =>
-            {
-                if (_repositoriesData.Items.Any())
-                    return;
+            LoadCache.Where(x => x != null && x.Any())
+                .Do(async cache => await AddRepositories(cache)).Subscribe();
 
-                if (x.Any())
-                    _repositoriesData.AddRange(x);
-                else
-                    Observable.Return(Unit.Default).InvokeCommand(AddRepositoriesCommand);
-            });
+            LoadCache.Where(x => x != null && !x.Any())
+                .Select(x => Unit.Default)
+                .InvokeCommand(LoadNext);
         }
 
         private void ConfigureAddCommand()
         {
             var canLoad = this.WhenAny(x => x.Adding, (a) => !a.Value);
 
-            AddRepositoriesCommand = ReactiveCommand.CreateFromObservable(_cacheService.LoadNextRepositories, canLoad);
+            LoadNext = ReactiveCommand.CreateFromTask(_cacheService.LoadNextRepositories, canLoad);
 
-            AddRepositoriesCommand.IsExecuting.ToPropertyEx(this, x => x.Adding);
-            AddRepositoriesCommand.ThrownExceptions.SelectMany(ex => ExceptionInteraction.Handle(ex)).Subscribe();
-
-            AddRepositoriesCommand.Subscribe(_repositoriesData.AddRange);
+            LoadNext.IsExecuting.ToPropertyEx(this, x => x.Adding);
+            LoadNext.ThrownExceptions.SelectMany(ex => ExceptionInteraction.Handle(ex)).Subscribe();
+            LoadNext.Where(x => x != null && x.Any())
+                .Do(async cache => await AddRepositories(cache)).Subscribe();
         }
 
-        private static Func<GitHubRepository, bool> BuildFilter(string searchText)
+        private static Func<LocalRepository, bool> BuildFilter(string searchText)
         {
             if (string.IsNullOrEmpty(searchText))
                 return repository => true;
 
-            return repo => repo.RepositoryName.Contains(searchText) || repo.Owner.Login.Contains(searchText);
+            return repo => repo.Name.Contains(searchText) || repo.Owner.Contains(searchText);
+        }
+
+        private async Task AddRepositories(IEnumerable<LocalRepository> repositories)
+        {
+            foreach (var repository in repositories)
+            {
+                if (!_repositoriesData.Items.Any(x => x.Id.Equals(repository.Id)))
+                {
+                    _repositoriesData.Add(repository);
+                    await Task.Delay(25);
+                }
+            }
         }
     }
 }

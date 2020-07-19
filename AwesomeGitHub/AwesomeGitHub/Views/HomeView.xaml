@@ -28,12 +28,11 @@
                    Placeholder="Search" />
         </Grid>
 
-        <ListView x:Name="Repositories"
-                  Grid.Row="1"
-                  Margin="16,0,0,0"
-                  HasUnevenRows="True"
-                  ItemTemplate="{StaticResource RepositoryTemplate}"
-                  SeparatorVisibility="None" />
+        <CollectionView x:Name="Repositories"
+                        Grid.Row="1"
+                        Margin="16,0,0,0"
+                        ItemTemplate="{StaticResource RepositoryTemplate}"
+                        SelectionMode="Single" />
         <Grid x:Name="GridLoader"
               Grid.Row="0"
               Grid.RowSpan="2">
