@@ -30,8 +30,12 @@
                     .InvokeCommand(ViewModel.LoadCache);
 
                 this.Bind(ViewModel, vm => vm.Search, v => v.SearchBox.Text).DisposeWith(d);
+
                 this.OneWayBind(ViewModel, vm => vm.Repositories, v => v.Repositories.ItemsSource).DisposeWith(d);
                 this.Bind(ViewModel, vm => vm.Selected, v => v.Repositories.SelectedItem);
+                this.OneWayBind(ViewModel, vm => vm.ItemTreshold, v => v.Repositories.RemainingItemsThreshold).DisposeWith(d);
+                this.BindCommand(ViewModel, vm => vm.LoadNext, v => v.Repositories, nameof(Repositories.RemainingItemsThresholdReached)).DisposeWith(d);
+
                 this.OneWayBind(ViewModel, vm => vm.Loading, v => v.GridLoader.IsVisible).DisposeWith(d);
 
                 this.WhenAnyValue(v => v.ViewModel.Adding)
@@ -56,20 +60,5 @@
             });
             base.OnAppearing();
         }
-
-        protected override void OnDisappearing()
-        {
-            Repositories.SelectedItem = null;
-            base.OnDisappearing();
-        }
-
-        //private bool NeedLoad(int index)
-        //{
-        //    var items = Repositories.ItemsSource.Cast<LocalRepository>().Count();
-        //    if (items < 10 || items >= KeyValues.MaxRepositories)
-        //        return false;
-
-        //    return index >= items - 5;
-        //}
     }
 }

@@ -29,6 +29,7 @@
 
         [Reactive] public string Search { get; set; }
         [Reactive] public LocalRepository Selected { get; set; }
+        [Reactive] public int ItemTreshold { get; set; }
 
         public ReactiveCommand<Unit, IEnumerable<LocalRepository>> LoadCache { get; private set; }
         public ReactiveCommand<Unit, IEnumerable<LocalRepository>> LoadNext { get; private set; }
@@ -78,9 +79,12 @@
 
         private void ConfigureAddCommand()
         {
-            var canLoad = this.WhenAny(x => x.Adding, (a) => !a.Value);
-
-            LoadNext = ReactiveCommand.CreateFromTask(_cacheService.LoadNextRepositories, canLoad);
+            var canAdd = this.WhenAny(x => x.Search, search => string.IsNullOrEmpty(search.Value));
+            LoadNext = ReactiveCommand.CreateFromTask(async () =>
+            {
+                ItemTreshold = -1;
+                return await _cacheService.LoadNextRepositories();
+            }, canAdd);
 
             LoadNext.IsExecuting.ToPropertyEx(this, x => x.Adding);
             LoadNext.ThrownExceptions.SelectMany(ex => ExceptionInteraction.Handle(ex)).Subscribe();
@@ -98,14 +102,16 @@
 
         private async Task AddRepositories(IEnumerable<LocalRepository> repositories)
         {
+            ItemTreshold = -1;
             foreach (var repository in repositories)
             {
-                if (!_repositoriesData.Items.Any(x => x.Id.Equals(repository.Id)))
+                if (!_repositoriesData.Items.Any(x => x.Id.Equals(repository.Id)) && _repositories.Count < KeyValues.MaxRepositories)
                 {
                     _repositoriesData.Add(repository);
                     await Task.Delay(10);
                 }
             }
+            ItemTreshold = 5;
         }
     }
 }

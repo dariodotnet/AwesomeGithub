@@ -15,11 +15,9 @@
             <views:RepositoryViewCell />
         </DataTemplate>
     </ContentPage.Resources>
-    <Grid BackgroundColor="White">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="50" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
+    <Grid BackgroundColor="White"
+          RowDefinitions="50,1*"
+          RowSpacing="0">
 
         <Grid BackgroundColor="{StaticResource HeaderBox}">
             <Entry x:Name="SearchBox"
@@ -32,7 +30,8 @@
                         Grid.Row="1"
                         Margin="16,0,0,0"
                         ItemTemplate="{StaticResource RepositoryTemplate}"
-                        SelectionMode="Single">
+                        SelectionMode="Single"
+                        VerticalScrollBarVisibility="Always">
             <CollectionView.ItemsLayout>
                 <LinearItemsLayout ItemSpacing="8" Orientation="Vertical" />
             </CollectionView.ItemsLayout>
