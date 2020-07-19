@@ -4,7 +4,7 @@
 
     public static class ModelsExtensions
     {
-        public static LocalPullRequest ToLocal(this GitHubPullRequest pullRequest) =>
+        public static LocalPullRequest ToLocal(this GitHubPullRequest pullRequest, int repositoryId) =>
             new LocalPullRequest
             {
                 Id = (int)pullRequest.Id,
@@ -15,7 +15,8 @@
                 Image = pullRequest.User.Avatar,
                 Url = pullRequest.Url,
                 IsClosed = pullRequest.State.Equals("closed"),
-                ExpireAt = DateTimeOffset.Now.AddHours(12)
+                ExpireAt = DateTimeOffset.Now.AddHours(12),
+                RepositoryId = repositoryId
             };
 
         public static LocalRepository ToLocal(this GitHubRepository repository, string language) =>
