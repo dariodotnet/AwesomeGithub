@@ -1,7 +1,7 @@
 ﻿namespace AwesomeGitHub.Views
 {
-    using ReactiveUI;
-    using System.Reactive.Disposables;
+    using System;
+    using Xamarin.Forms;
     using Xamarin.Forms.Xaml;
 
     [XamlCompilation(XamlCompilationOptions.Compile)]
@@ -10,18 +10,23 @@
         public RepositoryViewCell()
         {
             InitializeComponent();
+        }
 
-            this.WhenActivated(d =>
-                {
-                    this.OneWayBind(ViewModel, vm => vm.Name, v => v.RepositoryName.Text,
-                        e => $"{e[0].ToString().ToUpper()}{e.Substring(1)}").DisposeWith(d);
+        protected override void OnBindingContextChanged()
+        {
+            base.OnBindingContextChanged();
 
-                    this.OneWayBind(ViewModel, vm => vm.Description, v => v.Description.Text).DisposeWith(d);
-                    this.OneWayBind(ViewModel, vm => vm.ForksCount, v => v.ForksCount.Text).DisposeWith(d);
-                    this.OneWayBind(ViewModel, vm => vm.StarsCount, v => v.StarsCount.Text).DisposeWith(d);
-                    this.OneWayBind(ViewModel, vm => vm.Owner, v => v.OwnerLogin.Text).DisposeWith(d);
-                    this.OneWayBind(ViewModel, vm => vm.FullName, v => v.FullName.Text).DisposeWith(d);
-                });
+            if (ViewModel is null)
+                return;
+
+            RepositoryName.Text = $"{ViewModel.Name[0].ToString().ToUpper()}{ViewModel.Name.Substring(1)}";
+            Description.Text = ViewModel.Description;
+            ForksCount.Text = ViewModel.ForksCount.ToString();
+            StarsCount.Text = ViewModel.StarsCount.ToString();
+            OwnerLogin.Text = ViewModel.Owner;
+            FullName.Text = ViewModel.FullName;
+
+            UserImage.Source = ImageSource.FromUri(new Uri(ViewModel.Image));
         }
     }
 }
