@@ -39,10 +39,10 @@
 
         public void ChangeLanguage(string language)
         {
-            if (language.Equals(Language))
+            if (language.Equals(Language.ToLower()))
                 return;
 
-            Preferences.Set(KeyValues.DefaultLanguage, language);
+            Preferences.Set(KeyValues.DefaultLanguage, language.ToLower());
             Language = language;
             _repositoriesCount = 0;
             _pullRequestCount = 0;
