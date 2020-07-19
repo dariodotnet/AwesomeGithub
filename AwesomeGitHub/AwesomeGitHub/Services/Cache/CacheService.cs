@@ -70,7 +70,7 @@
 
         public IEnumerable<LocalPullRequest> LoadCachedPullRequests()
         {
-            var cache = _db.Table<LocalPullRequest>().ToList();
+            var cache = _db.Table<LocalPullRequest>().Where(x => x.RepositoryId.Equals(_current.Id)).ToList();
             _pullRequestCount = cache.Count;
             return cache;
         }
