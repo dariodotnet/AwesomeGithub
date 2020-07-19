@@ -48,6 +48,7 @@
             _pullRequestData.Connect()
                 .Sort(SortExpressionComparer<LocalPullRequest>.Descending(x => x.Date))
                 .ObserveOn(RxApp.MainThreadScheduler)
+                .Do(x => Count())
                 .Bind(out _pullRequests)
                 .DisposeMany().Subscribe();
 
@@ -92,7 +93,8 @@
             AddCommand.IsExecuting.ToPropertyEx(this, x => x.Adding);
             AddCommand.ThrownExceptions.SelectMany(ex => ExceptionInteraction.Handle(ex)).Subscribe();
             AddCommand.Where(x => x != null && x.Any())
-                .Do(async api => await AddPullRequest(api));
+                .Do(async api => await AddPullRequest(api))
+                .Subscribe();
         }
 
         private void Count()
@@ -106,7 +108,7 @@
             foreach (var pullRequest in pullRequests)
             {
                 _pullRequestData.Add(pullRequest);
-                await Task.Delay(25);
+                await Task.Delay(10);
             }
         }
     }

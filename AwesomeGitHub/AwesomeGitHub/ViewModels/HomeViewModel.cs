@@ -52,10 +52,6 @@
 
             this.WhenAnyValue(x => x.Selected)
                 .Where(x => x != null)
-                .Do(x =>
-                {
-
-                })
                 .Do(x => _cacheService.SetCurrentRepository(x))
                 .Subscribe();
 
@@ -107,7 +103,7 @@
                 if (!_repositoriesData.Items.Any(x => x.Id.Equals(repository.Id)))
                 {
                     _repositoriesData.Add(repository);
-                    await Task.Delay(25);
+                    await Task.Delay(10);
                 }
             }
         }
