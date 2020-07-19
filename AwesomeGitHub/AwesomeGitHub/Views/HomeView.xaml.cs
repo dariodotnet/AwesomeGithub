@@ -45,27 +45,8 @@
                     .Where(x => x != null)
                     .ObserveOn(RxApp.MainThreadScheduler)
                     .Do(async selected => await Navigation.PushAsync(new PullRequestView()))
+                    .Do(x => ViewModel.Selected = null)
                     .Subscribe().DisposeWith(d);
-
-                //this.WhenAnyValue(v => v.Repositories.SelectedItem)
-                //    .ObserveOn(RxApp.MainThreadScheduler)
-                //    .Where(x => x != null)
-                //    .Subscribe(selected =>
-                //    {
-                //        ViewModel.SetCurrent((GitHubRepository)selected)
-                //            .Subscribe(x => Navigation.PushAsync(new PullRequestView()));
-                //    })
-                //    .DisposeWith(d);
-
-                //Observable.FromEventPattern<EventHandler<ItemVisibilityEventArgs>, ItemVisibilityEventArgs>(
-                //        x => Repositories.ItemAppearing += x,
-                //        x => Repositories.ItemAppearing -= x)
-                //    .Where(x => x != null)
-                //    .Select(x => x.EventArgs.ItemIndex)
-                //    .Select(NeedLoad)
-                //    .Where(x => x)
-                //    .Select(x => Unit.Default)
-                //    .InvokeCommand(ViewModel.LoadNext).DisposeWith(d);
 
                 ViewModel.ExceptionInteraction.RegisterHandler(async interaction =>
                 {
