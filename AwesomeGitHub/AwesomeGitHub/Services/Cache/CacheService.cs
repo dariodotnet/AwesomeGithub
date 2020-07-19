@@ -1,25 +1,25 @@
 ﻿namespace AwesomeGitHub.Services
 {
     using Models;
-    using ReactiveUI;
-    using ReactiveUI.Fody.Helpers;
     using Splat;
     using SQLite;
+    using System;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
     using Xamarin.Essentials;
 
-    public class CacheService : ReactiveObject, ICacheService
+    public class CacheService : ICacheService
     {
+        public event EventHandler LanguageChanged;
         private readonly SQLiteConnection _db;
         private readonly IApiService _apiService;
         private LocalRepository _current;
         private int _repositoriesCount;
         private int _pullRequestCount;
 
-        [Reactive] public string Language { get; set; }
+        public string Language { get; set; }
 
         public CacheService()
         {
@@ -39,9 +39,14 @@
 
         public void ChangeLanguage(string language)
         {
+            if (language.Equals(Language))
+                return;
+
             Preferences.Set(KeyValues.DefaultLanguage, language);
+            Language = language;
             _repositoriesCount = 0;
             _pullRequestCount = 0;
+            OnLanguageChanged();
         }
 
         public IEnumerable<LocalRepository> LoadCachedRepositories()
@@ -92,5 +97,7 @@
         {
             return total > 0 ? total / 50 : 0;
         }
+
+        protected virtual void OnLanguageChanged() => LanguageChanged?.Invoke(this, EventArgs.Empty);
     }
 }
