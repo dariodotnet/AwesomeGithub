@@ -79,8 +79,9 @@
         {
             var page = CalculatePage(_pullRequestCount);
             var github = await _apiService.GetPullRequests(_current.Owner, _current.Name, page);
-            var local = github.Select(x => x.ToLocal()).ToList();
-            _repositoriesCount += local.Count;
+            var local = github.Select(x => x.ToLocal(_current.Id)).ToList();
+            _pullRequestCount += local.Count;
+            local.ForEach(x => _db.InsertOrReplace(x, typeof(LocalPullRequest)));
             return local;
         }
 
