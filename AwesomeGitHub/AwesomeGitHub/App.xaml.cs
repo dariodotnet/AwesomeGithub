@@ -12,6 +12,19 @@
         {
             InitializeComponent();
 
+            Device.SetFlags(new[]
+            {
+                "AppTheme_Experimental",
+                "CarouselView_Experimental",
+                "Expander_Experimental",
+                "Markup_Experimental",
+                "MediaElement_Experimental",
+                "RadioButton_Experimental",
+                "Shapes_Experimental",
+                "Shell_UWP_Experimental",
+                "SwipeView_Experimental"
+            });
+
             RegisterServices();
 
             if (string.IsNullOrEmpty(Preferences.Get(KeyValues.DefaultLanguage, "")))
