@@ -15,7 +15,7 @@
             <views:RepositoryViewCell />
         </DataTemplate>
     </ContentPage.Resources>
-    <Grid>
+    <Grid BackgroundColor="White">
         <Grid.RowDefinitions>
             <RowDefinition Height="50" />
             <RowDefinition Height="*" />
@@ -32,7 +32,11 @@
                         Grid.Row="1"
                         Margin="16,0,0,0"
                         ItemTemplate="{StaticResource RepositoryTemplate}"
-                        SelectionMode="Single" />
+                        SelectionMode="Single">
+            <CollectionView.ItemsLayout>
+                <LinearItemsLayout ItemSpacing="8" Orientation="Vertical" />
+            </CollectionView.ItemsLayout>
+        </CollectionView>
         <Grid x:Name="GridLoader"
               Grid.Row="0"
               Grid.RowSpan="2">

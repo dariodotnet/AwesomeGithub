@@ -10,77 +10,93 @@
                           xmlns:transformations="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading.Transformations"
                           x:TypeArguments="models:LocalRepository"
                           mc:Ignorable="d">
-    <StackLayout>
-        <Grid Margin="0,8,0,0" ColumnSpacing="16">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="7*" />
-                <ColumnDefinition Width="3*" />
-            </Grid.ColumnDefinitions>
 
-            <StackLayout>
-                <Label x:Name="RepositoryName"
-                       FontSize="Medium"
-                       TextColor="{StaticResource HeaderLabelColor}" />
-                <Label x:Name="Description"
-                       FontSize="Micro"
-                       LineBreakMode="TailTruncation"
-                       MaxLines="2" />
+    <Grid Margin="0,8,0,0"
+          BackgroundColor="White"
+          ColumnDefinitions="7*,3*"
+          ColumnSpacing="16"
+          RowDefinitions="1*,8">
+        <Grid.Style>
+            <Style TargetType="Grid">
+                <Setter Property="VisualStateManager.VisualStateGroups">
+                    <VisualStateGroupList>
+                        <VisualStateGroup x:Name="CommonStates">
+                            <VisualState x:Name="Normal" />
+                            <VisualState x:Name="Selected">
+                                <VisualState.Setters>
+                                    <Setter Property="BackgroundColor" Value="WhiteSmoke" />
+                                </VisualState.Setters>
+                            </VisualState>
+                        </VisualStateGroup>
+                    </VisualStateGroupList>
+                </Setter>
+            </Style>
+        </Grid.Style>
+        <StackLayout>
+            <Label x:Name="RepositoryName"
+                   FontSize="Medium"
+                   TextColor="{StaticResource HeaderLabelColor}" />
+            <Label x:Name="Description"
+                   FontSize="Micro"
+                   LineBreakMode="TailTruncation"
+                   MaxLines="2" />
 
-                <StackLayout Orientation="Horizontal">
-                    <cachedImage:CachedImage CacheType="Memory"
-                                             HeightRequest="18"
-                                             Source="Fork"
-                                             WidthRequest="18" />
-                    <Label x:Name="ForksCount"
-                           FontSize="Small"
-                           TextColor="{StaticResource HighLightColor}" />
-
-                    <cachedImage:CachedImage Margin="8,0,0,0"
-                                             CacheType="Memory"
-                                             HeightRequest="18"
-                                             Source="Star"
-                                             WidthRequest="18" />
-                    <Label x:Name="StarsCount"
-                           FontSize="Small"
-                           TextColor="{StaticResource HighLightColor}" />
-                </StackLayout>
-
-
-            </StackLayout>
-            <StackLayout Grid.Column="1"
-                         Margin="0,0,16,0"
-                         HorizontalOptions="CenterAndExpand"
-                         Spacing="0"
-                         VerticalOptions="End">
-                <cachedImage:CachedImage x:Name="UserImage"
-                                         CacheDuration="30"
-                                         CacheType="All"
-                                         DownsampleToViewSize="True"
-                                         ErrorPlaceholder="UserLoader"
-                                         HeightRequest="32"
-                                         LoadingPlaceholder="UserLoader"
-                                         RetryCount="3"
-                                         RetryDelay="600"
-                                         Source="{Binding Image}"
-                                         WidthRequest="32">
-                    <cachedImage:CachedImage.Transformations>
-                        <transformations:CircleTransformation />
-                    </cachedImage:CachedImage.Transformations>
-                </cachedImage:CachedImage>
-
-                <Label x:Name="OwnerLogin"
+            <StackLayout Orientation="Horizontal">
+                <cachedImage:CachedImage CacheType="Memory"
+                                         HeightRequest="18"
+                                         Source="Fork"
+                                         WidthRequest="18" />
+                <Label x:Name="ForksCount"
                        FontSize="Small"
-                       HorizontalTextAlignment="Center"
-                       LineBreakMode="TailTruncation"
-                       TextColor="{StaticResource HeaderLabelColor}" />
-                <Label x:Name="FullName"
-                       FontSize="Micro"
-                       HorizontalTextAlignment="Center"
-                       LineBreakMode="TailTruncation" />
+                       TextColor="{StaticResource HighLightColor}" />
+
+                <cachedImage:CachedImage Margin="8,0,0,0"
+                                         CacheType="Memory"
+                                         HeightRequest="18"
+                                         Source="Star"
+                                         WidthRequest="18" />
+                <Label x:Name="StarsCount"
+                       FontSize="Small"
+                       TextColor="{StaticResource HighLightColor}" />
             </StackLayout>
-        </Grid>
-        <BoxView Margin="0,8,0,0"
+
+
+        </StackLayout>
+        <StackLayout Grid.Column="1"
+                     Margin="0,0,16,0"
+                     HorizontalOptions="CenterAndExpand"
+                     Spacing="0"
+                     VerticalOptions="End">
+            <cachedImage:CachedImage x:Name="UserImage"
+                                     CacheDuration="30"
+                                     CacheType="All"
+                                     DownsampleToViewSize="True"
+                                     ErrorPlaceholder="UserLoader"
+                                     HeightRequest="32"
+                                     LoadingPlaceholder="UserLoader"
+                                     RetryCount="3"
+                                     RetryDelay="600"
+                                     WidthRequest="32">
+                <cachedImage:CachedImage.Transformations>
+                    <transformations:CircleTransformation />
+                </cachedImage:CachedImage.Transformations>
+            </cachedImage:CachedImage>
+
+            <Label x:Name="OwnerLogin"
+                   FontSize="Small"
+                   HorizontalTextAlignment="Center"
+                   LineBreakMode="TailTruncation"
+                   TextColor="{StaticResource HeaderLabelColor}" />
+            <Label x:Name="FullName"
+                   FontSize="Micro"
+                   HorizontalTextAlignment="Center"
+                   LineBreakMode="TailTruncation" />
+        </StackLayout>
+        <BoxView Grid.Row="1"
+                 Grid.Column="0"
+                 Grid.ColumnSpan="2"
                  BackgroundColor="{StaticResource SeparatorColor}"
-                 HeightRequest="1" />
-    </StackLayout>
+                 HeightRequest="1"
+                 VerticalOptions="End" />
+    </Grid>
 </rxui:ReactiveContentView>
