@@ -39,6 +39,7 @@
             _cacheService = cacheService ?? Locator.Current.GetService<ICacheService>();
 
             _repositoriesData = new SourceList<LocalRepository>();
+            ItemTreshold = -1;
 
             ConfigureAddCommand();
             ConfigureLoadCommand();
