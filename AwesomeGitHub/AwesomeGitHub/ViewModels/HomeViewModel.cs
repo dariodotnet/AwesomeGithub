@@ -58,6 +58,13 @@
                 .Where(x => x != null)
                 .Do(x => _cacheService.SetCurrentRepository(x))
                 .Subscribe();
+
+            Observable.FromEventPattern(
+                    x => _cacheService.LanguageChanged += x,
+                    x => _cacheService.LanguageChanged -= x)
+                .Do(x => _repositoriesData.Clear())
+                .Select(x => Unit.Default)
+                .InvokeCommand(LoadCache);
         }
 
         private void ConfigureLoadCommand()
