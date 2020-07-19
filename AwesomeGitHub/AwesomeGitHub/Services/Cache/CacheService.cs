@@ -46,12 +46,12 @@
 
         public IEnumerable<LocalRepository> LoadCachedRepositories()
         {
-            var cached = _db.Table<LocalRepository>().ToList();
+            var cached = _db.Table<LocalRepository>().Where(x => x.Language.Equals(Language)).ToList();
             if (cached is null)
                 return new List<LocalRepository>();
 
             _repositoriesCount = cached.Count;
-            return cached;
+            return cached.OrderByDescending(x => x.StarsCount);
         }
 
         public async Task<IEnumerable<LocalRepository>> LoadNextRepositories()
@@ -65,7 +65,7 @@
             }
             _repositoriesCount += local.Count;
             local.ForEach(x => _db.InsertOrReplace(x, typeof(LocalRepository)));
-            return local;
+            return local.OrderByDescending(x => x.StarsCount);
         }
 
         public IEnumerable<LocalPullRequest> LoadCachedPullRequests()
