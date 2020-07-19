@@ -31,6 +31,7 @@
         public LocalRepository Repository { [ObservableAsProperty]get; }
         public bool Loading { [ObservableAsProperty]get; }
         public bool Adding { [ObservableAsProperty]get; }
+        [Reactive] public int ItemTreshold { get; set; }
 
         public ReactiveCommand<Unit, LocalRepository> LoadCurrentRepository { get; private set; }
         public ReactiveCommand<Unit, IEnumerable<LocalPullRequest>> AddCommand { get; private set; }
@@ -41,6 +42,8 @@
             _cacheService = Locator.Current.GetService<ICacheService>();
 
             _pullRequestData = new SourceList<LocalPullRequest>();
+
+            ItemTreshold = -1;
 
             OpenCount = "0 opened";
             CloseCount = "0 closed";
@@ -89,7 +92,11 @@
         {
             var canAdd = this.WhenAny(x => x.Adding, x => x.Complete, (a, c) => !a.Value && !c.Value);
 
-            AddCommand = ReactiveCommand.CreateFromTask(_cacheService.LoadNextPullRequests, canAdd);
+            AddCommand = ReactiveCommand.CreateFromTask(async () =>
+            {
+                ItemTreshold = -1;
+                return await _cacheService.LoadNextPullRequests();
+            }, canAdd);
             AddCommand.IsExecuting.ToPropertyEx(this, x => x.Adding);
             AddCommand.ThrownExceptions.SelectMany(ex => ExceptionInteraction.Handle(ex)).Subscribe();
             AddCommand.Where(x => x != null && x.Any())
@@ -105,11 +112,13 @@
 
         private async Task AddPullRequest(IEnumerable<LocalPullRequest> pullRequests)
         {
+            ItemTreshold = -1;
             foreach (var pullRequest in pullRequests)
             {
                 _pullRequestData.Add(pullRequest);
                 await Task.Delay(10);
             }
+            ItemTreshold = 5;
         }
     }
 }

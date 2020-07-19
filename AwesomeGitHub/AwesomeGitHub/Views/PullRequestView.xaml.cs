@@ -34,6 +34,10 @@
                 this.OneWayBind(ViewModel, vm => vm.CloseCount, v => v.Closed.Text).DisposeWith(d);
 
                 this.OneWayBind(ViewModel, vm => vm.PullRequests, v => v.PullRequests.ItemsSource).DisposeWith(d);
+                this.OneWayBind(ViewModel, vm => vm.ItemTreshold, v => v.PullRequests.RemainingItemsThreshold).DisposeWith(d);
+                this.BindCommand(ViewModel, vm => vm.AddCommand, v => v.PullRequests,
+                    nameof(PullRequests.RemainingItemsThresholdReached)).DisposeWith(d);
+
                 this.OneWayBind(ViewModel, vm => vm.Loading, v => v.GridLoader.IsVisible).DisposeWith(d);
 
                 this.OneWayBind(ViewModel, vm => vm.Repository.Name, v => v.Title,
@@ -46,16 +50,6 @@
                         GridAdder.TranslateTo(0, visible ? 0 : 60, 500);
                     });
 
-                //Observable.FromEventPattern<EventHandler<ItemVisibilityEventArgs>, ItemVisibilityEventArgs>(
-                //        x => PullRequests.ItemAppearing += x,
-                //        x => PullRequests.ItemAppearing -= x)
-                //    .Where(x => x != null)
-                //    .Select(x => x.EventArgs.ItemIndex)
-                //    .Select(NeedLoad)
-                //    .Where(x => x)
-                //    .Select(x => Unit.Default)
-                //    .InvokeCommand(ViewModel.AddCommand).DisposeWith(d);
-
                 ViewModel.ExceptionInteraction.RegisterHandler(async interaction =>
                 {
                     await DisplayAlert("Error", interaction.Input.Message, "Ok");
@@ -65,14 +59,5 @@
 
             base.OnAppearing();
         }
-
-        //private bool NeedLoad(int index)
-        //{
-        //    var items = PullRequests.ItemsSource.Cast<LocalPullRequest>().Count();
-        //    if (items < 10 || items >= KeyValues.MaxRepositories)
-        //        return false;
-
-        //    return index >= items - 5;
-        //}
     }
 }

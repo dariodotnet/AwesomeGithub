@@ -14,11 +14,7 @@
             <views:PullRequestViewCell />
         </DataTemplate>
     </ContentPage.Resources>
-    <Grid RowSpacing="0">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="50" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
+    <Grid RowDefinitions="50,1*" RowSpacing="0">
         <StackLayout BackgroundColor="{StaticResource HeaderBox}" Orientation="Horizontal">
             <Label Margin="16,0,0,0"
                    FontAttributes="Bold"
@@ -40,7 +36,8 @@
         <CollectionView x:Name="PullRequests"
                         Grid.Row="1"
                         Margin="16,0,0,0"
-                        ItemTemplate="{StaticResource PullRequestTemplate}" />
+                        ItemTemplate="{StaticResource PullRequestTemplate}"
+                        VerticalScrollBarVisibility="Always" />
 
         <Grid x:Name="GridLoader"
               Grid.Row="0"
