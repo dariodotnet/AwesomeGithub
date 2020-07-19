@@ -37,12 +37,10 @@
             </Label>
         </StackLayout>
 
-        <ListView x:Name="PullRequests"
-                  Grid.Row="1"
-                  Margin="16,0,0,0"
-                  HasUnevenRows="True"
-                  ItemTemplate="{StaticResource PullRequestTemplate}"
-                  SeparatorVisibility="None" />
+        <CollectionView x:Name="PullRequests"
+                        Grid.Row="1"
+                        Margin="16,0,0,0"
+                        ItemTemplate="{StaticResource PullRequestTemplate}" />
 
         <Grid x:Name="GridLoader"
               Grid.Row="0"

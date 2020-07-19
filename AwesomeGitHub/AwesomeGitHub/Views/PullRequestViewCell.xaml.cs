@@ -10,7 +10,7 @@
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class PullRequestViewCell
     {
-        private TapGestureRecognizer _tap = new TapGestureRecognizer();
+        private readonly TapGestureRecognizer _tap = new TapGestureRecognizer();
 
         public PullRequestViewCell()
         {
@@ -18,17 +18,14 @@
 
             this.WhenActivated(d =>
             {
-                this.OneWayBind(ViewModel, vm => vm.State, v => v.Closed.IsVisible, e => e.Equals("closed"))
-                    .DisposeWith(d);
+                this.OneWayBind(ViewModel, vm => vm.IsClosed, v => v.Closed.IsVisible).DisposeWith(d);
                 this.OneWayBind(ViewModel, vm => vm.Title, v => v.Title.Text,
                     e => $"{e[0].ToString().ToUpper()}{e.Substring(1)}").DisposeWith(d);
                 this.OneWayBind(ViewModel, vm => vm.Description, v => v.Description.Text).DisposeWith(d);
-                this.OneWayBind(ViewModel, vm => vm.User.Login, v => v.UserLogin.Text).DisposeWith(d);
-                this.OneWayBind(ViewModel, vm => vm.PullRequestDate, v => v.PullRequestDate.Text,
+                this.OneWayBind(ViewModel, vm => vm.UserLogin, v => v.UserLogin.Text).DisposeWith(d);
+                this.OneWayBind(ViewModel, vm => vm.Date, v => v.PullRequestDate.Text,
                     e => e.ToShortDateString()).DisposeWith(d);
             });
-
-            View.GestureRecognizers.Add(_tap);
 
             _tap.Tapped += async (sender, args) =>
             {
@@ -39,6 +36,8 @@
                     PreferredToolbarColor = (Color)Application.Current.Resources["ApplicationStatus"]
                 });
             };
+
+            GestureRecognizers.Add(_tap);
         }
     }
 }

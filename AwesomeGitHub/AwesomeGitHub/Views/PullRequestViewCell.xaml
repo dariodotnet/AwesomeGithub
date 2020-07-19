@@ -1,15 +1,15 @@
 ﻿<?xml version="1.0" encoding="UTF-8" ?>
-<rxui:ReactiveViewCell x:Class="AwesomeGitHub.Views.PullRequestViewCell"
-                       xmlns="http://xamarin.com/schemas/2014/forms"
-                       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-                       xmlns:cachedImage="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
-                       xmlns:d="http://xamarin.com/schemas/2014/forms/design"
-                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                       xmlns:models="clr-namespace:AwesomeGitHub.Models;assembly=AwesomeGitHub"
-                       xmlns:rxui="clr-namespace:ReactiveUI.XamForms;assembly=ReactiveUI.XamForms"
-                       xmlns:transformations="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading.Transformations"
-                       x:TypeArguments="models:GitHubPullRequest"
-                       mc:Ignorable="d">
+<rxui:ReactiveContentView x:Class="AwesomeGitHub.Views.PullRequestViewCell"
+                          xmlns="http://xamarin.com/schemas/2014/forms"
+                          xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                          xmlns:cachedImage="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+                          xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+                          xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                          xmlns:models="clr-namespace:AwesomeGitHub.Models;assembly=AwesomeGitHub"
+                          xmlns:rxui="clr-namespace:ReactiveUI.XamForms;assembly=ReactiveUI.XamForms"
+                          xmlns:transformations="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading.Transformations"
+                          x:TypeArguments="models:LocalPullRequest"
+                          mc:Ignorable="d">
     <Grid>
         <StackLayout>
             <Label x:Name="Title"
@@ -55,4 +55,4 @@
                TextColor="IndianRed"
                VerticalOptions="End" />
     </Grid>
-</rxui:ReactiveViewCell>
+</rxui:ReactiveContentView>
