@@ -19,12 +19,10 @@
           RowDefinitions="50,1*"
           RowSpacing="0">
 
-        <Grid BackgroundColor="{StaticResource HeaderBox}">
-            <Entry x:Name="SearchBox"
-                   Margin="16,0"
+        <SearchBar x:Name="SearchBox"
+                   BackgroundColor="{StaticResource HeaderBox}"
                    FontSize="Medium"
                    Placeholder="Search" />
-        </Grid>
 
         <CollectionView x:Name="Repositories"
                         Grid.Row="1"
