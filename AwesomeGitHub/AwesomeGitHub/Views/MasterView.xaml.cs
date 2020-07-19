@@ -23,11 +23,12 @@
                 Observable.FromEventPattern<FocusEventArgs>(
                         x => Searcher.Unfocused += x,
                         x => Searcher.Unfocused += x)
-                    .Subscribe(x =>
+                    .ObserveOn(RxApp.MainThreadScheduler)
+                    .Do(x =>
                     {
                         Observable.Return(Unit.Default).InvokeCommand(ViewModel.ChangeCommand);
                         ((MasterDetailPage)Application.Current.MainPage).IsPresented = false;
-                    });
+                    }).Subscribe().DisposeWith(d);
             });
 
             BindingContext = new MasterViewModel();
