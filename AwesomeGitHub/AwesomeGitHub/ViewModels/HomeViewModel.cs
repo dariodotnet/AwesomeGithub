@@ -39,6 +39,9 @@
 
             _repositoriesData = new SourceList<LocalRepository>();
 
+            ConfigureAddCommand();
+            ConfigureLoadCommand();
+
             var filter = this.WhenAnyValue(x => x.Search)
                 .Throttle(TimeSpan.FromMilliseconds(500))
                 .Select(BuildFilter);
@@ -54,9 +57,6 @@
                 .Where(x => x != null)
                 .Do(x => _cacheService.SetCurrentRepository(x))
                 .Subscribe();
-
-            ConfigureAddCommand();
-            ConfigureLoadCommand();
         }
 
         private void ConfigureLoadCommand()
