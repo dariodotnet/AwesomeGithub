@@ -185,4 +185,7 @@
   <ItemGroup>
     <BundleResource Include="Resources\GitHubLogo.png" />
   </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\splash_bg.png" />
+  </ItemGroup>
 </Project>
