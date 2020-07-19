@@ -1,11 +1,13 @@
 ﻿namespace AwesomeGitHub.Services
 {
     using Models;
+    using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
     public interface ICacheService
     {
+        event EventHandler LanguageChanged;
         string Language { get; }
 
         void SetCurrentRepository(LocalRepository repository);
