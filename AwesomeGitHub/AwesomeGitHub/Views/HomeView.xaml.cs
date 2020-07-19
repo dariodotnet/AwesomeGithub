@@ -48,8 +48,8 @@
                 this.WhenAnyValue(v => v.ViewModel.Selected)
                     .Where(x => x != null)
                     .ObserveOn(RxApp.MainThreadScheduler)
-                    .Do(async selected => await Navigation.PushAsync(new PullRequestView()))
                     .Do(x => ViewModel.Selected = null)
+                    .Do(async selected => await Navigation.PushAsync(new PullRequestView()))
                     .Subscribe().DisposeWith(d);
 
                 ViewModel.ExceptionInteraction.RegisterHandler(async interaction =>
