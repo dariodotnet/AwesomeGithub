@@ -21,6 +21,10 @@
             ChangeCommand = ReactiveCommand.Create(ChangeLanguage);
         }
 
-        private void ChangeLanguage() => _cacheService.ChangeLanguage(Language);
+        private void ChangeLanguage()
+        {
+            _cacheService.ChangeLanguage(Language);
+            Language = "";
+        }
     }
 }
