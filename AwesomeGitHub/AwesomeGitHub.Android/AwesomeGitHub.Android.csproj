@@ -15,7 +15,6 @@
     <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
     <MonoAndroidResourcePrefix>Resources</MonoAndroidResourcePrefix>
     <MonoAndroidAssetsPrefix>Assets</MonoAndroidAssetsPrefix>
-    <AndroidUseLatestPlatformSdk>false</AndroidUseLatestPlatformSdk>
     <TargetFrameworkVersion>v10.0</TargetFrameworkVersion>
     <AndroidEnableSGenConcurrent>true</AndroidEnableSGenConcurrent>
     <AndroidHttpClientHandlerType>Xamarin.Android.Net.AndroidClientHandler</AndroidHttpClientHandlerType>
@@ -131,7 +130,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AwesomeGitHub\AwesomeGitHub.csproj">
-      <Project>{BA05FBBD-4B88-4EF8-8D0A-B29D4000E4F9}</Project>
+      <Project>{8DE4CC4B-36FC-4FB2-97C5-4A0E96EFB655}</Project>
       <Name>AwesomeGitHub</Name>
     </ProjectReference>
   </ItemGroup>
